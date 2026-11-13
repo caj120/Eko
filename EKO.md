@@ -10,44 +10,54 @@ A post is an **echo**. An acknowledgment of someone's contribution is a
 **credit**. Credits accumulate into a track record that the subject cannot
 edit, and that track record is what eventually backs a line of mutual credit.
 
-## The stack
+## Where Eko sits
 
-### Foundational 5
+### The Five Foundational Layers
 
-The infrastructure layer. Eko does not reimplement any of it.
+Civilizational primitives, not products. Eko reimplements none of them.
 
-| | Role in Eko |
+| Layer | Answers |
 |---|---|
-| **Holochain** | agent-centric storage and peer validation. Every echo and credit is an entry on its author's own source chain. |
-| mutual-credit currencies. The intended settlement engine for the ledger layer. |
-| cross-system identity and data portability, so an Eko record is not stranded in one app. |
-| energy coordination. The first real-world resource a Genesis State has to account for. |
-| connectivity that the community owns rather than rents. |
-| asset backing, for the point where mutual credit meets something outside the network. |
+| **Identity and Agency** | Who are you across time and systems? |
+| **Memory and Interoperability** | Does what I build carry forward? |
+| **Connectivity** | Can people coordinate without a gatekeeper? |
+| **Accounting and Value Flow** | Does value follow contribution? |
+| **Energy and Physical Infrastructure** | Can digital systems survive in the physical world? |
 
-### Capability layer (the Eko zomes)
+Together these are the substrate of a GENESIS State. They are what make a
+society non-extractive.
 
-| Capability | Zome | State |
-|---|---|---|
-| Identity | `profiles` | working |
-| Community | `echoes` | working |
-| Reputation | `credits` | working, new |
-| Data and trust | Holochain validation itself | inherent |
-| Coordination | `genesis` | working, new |
+### Eko is a living system, not a layer
 
-### Domains
+Eko sits on top of the five, as an organ rather than a primitive. It is the
+surface where contribution gets acknowledged and where a GENESIS State
+constitutes itself.
 
-Three surfaces the capabilities feed:
+| Eko zome | Foundational layer it reaches for |
+|---|---|
+| `profiles` | Identity and Agency |
+| `credits` | Memory and Interoperability. Reputation that travels and does not reset. |
+| `genesis` | the GENESIS State itself: charter, membership, commitments |
+| ledger (vocabulary only) | Accounting and Value Flow |
+| `echoes` | the community surface the rest hangs off |
 
-- **Livelihood**: the ledger layer. Mutual credit, backed by reputation.
-- **Belonging**: profiles and credits. Who you are, and who says so.
-- **Culture**: echoes. What a community talks about and amplifies.
+**Holochain** is the runtime Eko is written against, not one of the five
+layers. Every echo, credit, charter and admission is an entry on its author's
+own source chain, validated by peers. That is a technical fact about this
+codebase rather than a position in the ecosystem.
 
-### Destination
+### What a GENESIS State is
 
-**Genesis States**: communities that run their own identity, reputation,
-currency and coordination without renting any of it. Everything below is the
-substrate for that, not a product in itself.
+Not a brand. A society where identity persists, effort compounds, reputation
+travels, contribution is remembered, value follows humans, infrastructure is
+participatory, power is not centralized, and systems evolve without erasing
+people.
+
+A GENESIS State can live inside any country. It is a civilization layer, and
+the Human Ledger Framework is its blueprint.
+
+Eko's job in that is narrow and concrete: make contribution legible, make
+membership provable, and make the record of both something no platform owns.
 
 ## Human Credit inside Eko
 
@@ -111,8 +121,8 @@ deliberate.
 Mutual credit only works if a balance cannot move without both parties signing
 the same action. On Holochain that means countersigning sessions. Writing a
 singly-signed balance change would not be mutual credit, it would be
-self-issued money. The settlement engine belongs to the accounting layer
-rather than being hand-rolled here.
+self-issued money. Settlement belongs to the Accounting and Value Flow layer rather
+than being hand-rolled here.
 
 What Eko does own is the **credit line**: how far below zero an agent may go.
 In mutual credit the limit is the whole design, because it is the community's
@@ -129,7 +139,7 @@ to inflate a neighbour's borrowing power. `CREDIT_LINE_PER_CREDITER` and
 `CREDIT_LINE_CEILING` in `queries.rs` are placeholders; a community sets these,
 they are not constants of nature.
 
-## Genesis States
+## GENESIS States
 
 The `genesis` zome. Three entries make a state legible.
 
@@ -167,7 +177,7 @@ as well as what was done, which closes the loop across all three domains:
 
 ```
 commitment  ->  credit  ->  credit line  ->  mutual credit
-(coordination)  (reputation) (Eko)          (the relevant layer / the relevant layer)
+(coordination)  (reputation) (Eko)          (accounting layer)
 ```
 
 ### Genesis zome API
@@ -272,9 +282,9 @@ inserted above it. Current order: `profiles_integrity`, `echoes_integrity`,
 - No UI for credits. The Vue app has no credits view, no credit button on an
   echo, no credits tab on a profile.
 - No tryorama tests for the `credits` zome.
-- No UI for Genesis States. No charter form, roster, or commitment list.
+- No UI for GENESIS States. No charter form, roster, or commitment list.
 - No tryorama tests for the `genesis` zome.
-- Genesis States are declared, not sovereign. See the cloned-cell note above.
+- GENESIS States are declared, not sovereign. See the cloned-cell note above.
 - Nothing wired to `humancredit.co`. Reaching browser visitors means Holo
   hosting, which the `holo-dev-server` and joining-service plumbing supports.
 

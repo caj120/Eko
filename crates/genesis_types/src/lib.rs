@@ -1,6 +1,6 @@
-//! Genesis State primitives.
+//! GENESIS State primitives.
 //!
-//! A Genesis State is a community that runs its own identity, reputation,
+//! A GENESIS State is a community that runs its own identity, reputation,
 //! currency and coordination. This crate holds the three entries that make
 //! one legible: a charter that says what it is, an admission that says who
 //! belongs, and a commitment that says who owes what to whom.
@@ -44,7 +44,7 @@ pub struct CreditPolicy {
     pub ceiling: u64,
 }
 
-/// The constitution of a Genesis State.
+/// The constitution of a GENESIS State.
 ///
 /// Immutable. An amendment is a new Charter whose `amends` points at the one
 /// it replaces, so the history of a state's rules stays readable.

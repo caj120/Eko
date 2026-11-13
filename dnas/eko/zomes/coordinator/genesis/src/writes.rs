@@ -2,7 +2,7 @@ use genesis_integrity::*;
 use genesis_types::*;
 use hdk::prelude::*;
 
-/// Found a Genesis State by publishing its charter.
+/// Found a GENESIS State by publishing its charter.
 ///
 /// The charter's action hash is the state's identity from here on.
 #[hdk_extern]

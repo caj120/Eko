@@ -1,5 +1,4 @@
 use genesis_integrity::*;
-use genesis_types::*;
 use hdk::prelude::*;
 
 /// Found a GENESIS State by publishing its charter.

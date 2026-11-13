@@ -1,5 +1,4 @@
 use genesis_integrity::*;
-use genesis_types::*;
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
 

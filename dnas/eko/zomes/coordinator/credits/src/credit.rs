@@ -117,7 +117,7 @@ pub fn delete_credit(credit_hash: ActionHash) -> ExternResult<ActionHash> {
         )?;
         for link in links {
             if ActionHash::try_from(link.target.clone()).ok() == Some(credit_hash.clone()) {
-                delete_link(link.create_link_hash)?;
+                delete_link(link.create_link_hash, GetOptions::default())?;
             }
         }
     }

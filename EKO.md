@@ -33,7 +33,7 @@ The infrastructure layer. Eko does not reimplement any of it.
 | Community | `echoes` | working |
 | Reputation | `credits` | working, new |
 | Data and trust | Holochain validation itself | inherent |
-| Coordination | not yet written | planned |
+| Coordination | `genesis` | working, new |
 
 ### Domains
 
@@ -129,6 +129,90 @@ to inflate a neighbour's borrowing power. `CREDIT_LINE_PER_CREDITER` and
 `CREDIT_LINE_CEILING` in `queries.rs` are placeholders; a community sets these,
 they are not constants of nature.
 
+## Genesis States
+
+The `genesis` zome. Three entries make a state legible.
+
+**Charter.** What the state is: name, purpose, membership rule, decision rule,
+credit policy. Immutable. An amendment is a new charter whose `amends` points
+at the one it replaces, so the history of a state's rules stays readable. The
+founding charter's action hash is the state's identity everywhere else.
+
+**Admission.** That one agent admitted another. Written by the sponsor, never
+by the newcomer, and it names `sponsor_admission`: the sponsor's own admission
+to the same state.
+
+That one field is the design. Membership becomes a chain any peer can walk
+back to the founder, checking every link, because each link is an entry
+somebody signed:
+
+```
+founder -> admits A -> A admits B -> B admits C
+```
+
+Validation enforces each step: you cannot admit yourself, you cannot admit into
+a state you are not in, and the admission you cite as your authority must be
+yours and must belong to the same state. `get_sponsorship_chain` walks it.
+
+A founder leaves `sponsor_admission` as `None`, which only the charter's author
+may do. That is the root of the chain.
+
+**Commitment.** What an agent undertook to do, for whom, by when, inside a
+state. It cites the committer's own admission, so a commitment is always
+state-scoped and provably made by a member.
+
+Commitment is what gives a credit its provenance. Today a credit appears from
+nowhere. Pointed at a commitment via `attached_to`, it says what was promised
+as well as what was done, which closes the loop across all three domains:
+
+```
+commitment  ->  credit  ->  credit line  ->  mutual credit
+(coordination)  (reputation) (Eko)          (the relevant layer / the relevant layer)
+```
+
+### Genesis zome API
+
+```
+found_state(CharterInput)              -> Record
+admit(AdmissionInput)                  -> Record
+make_commitment(CommitmentInput)       -> Record
+get_state(ActionHash)                  -> Option<StateSummary>
+get_all_states(())                     -> Vec<StateSummary>
+get_members(ActionHash)                -> Vec<MemberRecord>
+get_states_for_agent(AgentPubKey)      -> Vec<MemberRecord>
+get_membership(MembershipQuery)        -> Option<MemberRecord>
+get_sponsorship_chain(ActionHash)      -> Vec<MemberRecord>
+get_commitments_for_state(ActionHash)  -> Vec<(Commitment, ActionHash)>
+get_commitments_for_agent(AgentPubKey) -> Vec<(Commitment, ActionHash)>
+```
+
+### What this is not, yet
+
+**A charter in this DNA is a declared state, not a sovereign one.** Everyone on
+Eko's DHT can read every state, and the rules enforced are Eko's validation
+rules, not the state's own. That is the honest limit of the current design.
+
+Real sovereignty on Holochain means a state gets **its own DNA and its own
+DHT**: a distinct network seed, its own membrane, its own validation. The
+mechanism is cloned cells. The structural path is a second role in
+`happ.yaml`, provisioned deferred with a clone limit above zero, pointing at a
+`genesis` DNA that is cloned once per state, carrying the charter in its DNA
+properties so the rules are baked into the network rather than stored in it.
+
+That is the right destination and it is deliberately not built yet. Getting the
+single-DNA version working and tested first is cheaper than debugging
+membranes and clone management before the primitives are proven.
+
+Two rules are also declared but **not enforced by peers**:
+
+- `MembershipRule::CreditThreshold` needs `genesis_integrity` to depend on
+  `credits_integrity` so it can deserialize credits and count distinct authors.
+- `DecisionRule` is recorded and nothing checks it. Charter amendment is
+  currently founder-only, whatever the charter says.
+
+Both are marked in the source. Do not ship a state whose safety depends on
+either until they are real.
+
 ## Validation rules in `credits`
 
 1. `recipient != author`. No self-crediting.
@@ -174,17 +258,23 @@ Most likely to need a touch-up, all in the new zome:
   use `Component::from(s.to_string())`.
 - `get_details` returning `Details::Record` in `credits/src/credit.rs`.
 - `LinkQuery::new` accepting `AnyLinkableHash` directly.
+- The generic `load::<T>` helper in `genesis/src/queries.rs`, whose
+  `TryFrom<SerializedBytes>` bound may need to be an `AppEntry` bound instead.
 
 Zome order in both `dna.yaml` files is load-bearing. `echoes_integrity` must
 stay at index 1, because `echoes/src/echo.rs` hardcodes `ZomeIndex(1)` when
-validating reechoes.
+validating reechoes. New integrity zomes get appended at the end, never
+inserted above it. Current order: `profiles_integrity`, `echoes_integrity`,
+`credits_integrity`, `genesis_integrity`.
 
 ## Not done yet
 
 - No UI for credits. The Vue app has no credits view, no credit button on an
   echo, no credits tab on a profile.
 - No tryorama tests for the `credits` zome.
-- No `coordination` zome, so no Genesis State primitives yet.
+- No UI for Genesis States. No charter form, roster, or commitment list.
+- No tryorama tests for the `genesis` zome.
+- Genesis States are declared, not sovereign. See the cloned-cell note above.
 - Nothing wired to `humancredit.co`. Reaching browser visitors means Holo
   hosting, which the `holo-dev-server` and joining-service plumbing supports.
 

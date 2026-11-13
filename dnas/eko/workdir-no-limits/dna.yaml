@@ -32,6 +32,10 @@ integrity:
       hash: ~
       path: "../../../target/wasm32-unknown-unknown/release/credits_integrity.wasm"
       dependencies: ~
+    - name: genesis_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/genesis_integrity.wasm"
+      dependencies: ~
 coordinator:
   zomes:
     - name: profiles
@@ -50,3 +54,8 @@ coordinator:
       path: "../../../target/wasm32-unknown-unknown/release/credits.wasm"
       dependencies:
         - name: credits_integrity
+    - name: genesis
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/genesis.wasm"
+      dependencies:
+        - name: genesis_integrity

@@ -1,0 +1,15 @@
+[package]
+name = "genesis_integrity"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "genesis_integrity"
+
+[dependencies]
+hdi = { workspace = true }
+hdk = { workspace = true }
+serde = { workspace = true }
+genesis_types = { workspace = true }
+holochain_serialized_bytes = { workspace = true }

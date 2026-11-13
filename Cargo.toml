@@ -36,6 +36,15 @@ path = "dnas/eko/zomes/integrity/credits"
 [workspace.dependencies.credit_types]
 path = "crates/credit_types"
 
+[workspace.dependencies.genesis]
+path = "dnas/eko/zomes/coordinator/genesis"
+
+[workspace.dependencies.genesis_integrity]
+path = "dnas/eko/zomes/integrity/genesis"
+
+[workspace.dependencies.genesis_types]
+path = "crates/genesis_types"
+
 [workspace.dependencies.ledger_types]
 path = "crates/ledger_types"
 

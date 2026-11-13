@@ -1,8 +1,8 @@
 use crate::tag_to_echoes::*;
+use echoes_integrity::*;
 use hc_link_pagination::HashPagination;
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echoes_integrity::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AddCashtagForEchoInput {

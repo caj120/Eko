@@ -1,8 +1,8 @@
 use crate::echo_with_context::get_batch_echoes_with_context_internal;
 use crate::pinner_to_hashes;
+use echo_types::FeedEcho;
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echo_types::FeedEcho;
 
 pub fn get_is_hash_pinned(hash: ActionHash) -> ExternResult<bool> {
     pinner_to_hashes::is_hash_pinned(AnyLinkableHash::from(hash))

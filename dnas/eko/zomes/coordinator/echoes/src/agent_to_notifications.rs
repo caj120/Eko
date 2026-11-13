@@ -2,10 +2,10 @@ use crate::agent_echoes::get_agent_echoes;
 use crate::agent_echoes::GetAgentEchoesInput;
 use crate::echo_to_responses::{get_responses_for_echo, GetResponsesForEchoInput};
 use crate::echo_with_context::get_echo_with_context_internal;
+use echo_types::{Echo, EchoType, Notification, NotificationType};
 use hc_link_pagination::{paginate_by_timestamp, TimestampPagination};
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echo_types::{Echo, EchoType, Notification, NotificationType};
 
 // Link type identifiers matching the merged echoes_integrity::LinkTypes enum ordinals.
 // Integrity zome order in dna.yaml:
@@ -370,19 +370,21 @@ pub fn count_notifications_for_agent(input: ZomeFnInput<AgentPubKey>) -> ExternR
             })
             .collect();
 
-    let echoes_responding_to_echoes_i_responded_to_count = echoes_responding_to_echoes_i_responded_to
-        .iter()
-        .flat_map(|(my_response, all_responses)| -> Vec<Record> {
-            all_responses
-                .iter()
-                .filter(|other_response| {
-                    other_response.action().author().clone() != agent.clone()
-                        && other_response.action().timestamp() >= my_response.action().timestamp()
-                })
-                .cloned()
-                .collect()
-        })
-        .count();
+    let echoes_responding_to_echoes_i_responded_to_count =
+        echoes_responding_to_echoes_i_responded_to
+            .iter()
+            .flat_map(|(my_response, all_responses)| -> Vec<Record> {
+                all_responses
+                    .iter()
+                    .filter(|other_response| {
+                        other_response.action().author().clone() != agent.clone()
+                            && other_response.action().timestamp()
+                                >= my_response.action().timestamp()
+                    })
+                    .cloned()
+                    .collect()
+            })
+            .count();
 
     Ok(notifications_count + echoes_responding_to_echoes_i_responded_to_count)
 }

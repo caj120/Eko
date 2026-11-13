@@ -1,5 +1,5 @@
-use hdi::prelude::*;
 use echo_types::EchoType;
+use hdi::prelude::*;
 
 pub fn validate_create_link_echo_to_responses(
     _action: CreateLink,

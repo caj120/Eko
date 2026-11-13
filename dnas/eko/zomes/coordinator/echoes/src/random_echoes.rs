@@ -1,8 +1,8 @@
 use crate::all_echoes::get_all_echo_hashes;
 use crate::tag_to_echoes::get_echo_hashes_for_tag;
+use echoes_integrity::make_tag_prefix_index;
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echoes_integrity::make_tag_prefix_index;
 
 /// Select random elements from a slice using HDK's random_bytes
 fn hdk_choose_multiple<T: Clone>(slice: &[T], count: usize) -> ExternResult<Vec<T>> {

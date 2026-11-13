@@ -1,11 +1,11 @@
 use crate::cashtag_to_echoes::*;
-use crate::hashtag_to_echoes::*;
-use crate::mention_to_echoes::*;
 use crate::echo_to_responses::*;
 use crate::echo_with_context::get_echo_with_context_internal;
+use crate::hashtag_to_echoes::*;
+use crate::mention_to_echoes::*;
+use echoes_integrity::*;
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echoes_integrity::*;
 use regex::Regex;
 
 #[hdk_extern]
@@ -19,7 +19,12 @@ pub fn create_echo(echo: Echo) -> ExternResult<ActionHash> {
         (),
     )?;
     let my_agent_pub_key = agent_info()?.agent_initial_pubkey;
-    create_link(my_agent_pub_key, echo_hash.clone(), LinkTypes::AgentEchoes, ())?;
+    create_link(
+        my_agent_pub_key,
+        echo_hash.clone(),
+        LinkTypes::AgentEchoes,
+        (),
+    )?;
     add_tags_for_echo(echo.clone(), echo_hash.clone())?;
 
     match echo.echo_type {

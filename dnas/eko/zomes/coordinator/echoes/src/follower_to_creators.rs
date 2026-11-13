@@ -1,7 +1,7 @@
+use echoes_integrity::*;
 use hc_link_pagination::{paginate_by_agentpubkey, AgentPubKeyPagination};
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echoes_integrity::*;
 
 #[derive(Serialize, Deserialize, SerializedBytes, Clone, Debug)]
 pub struct AddCreatorForFollowerInput {

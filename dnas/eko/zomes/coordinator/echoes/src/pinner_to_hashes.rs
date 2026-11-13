@@ -1,6 +1,6 @@
+use echoes_integrity::*;
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echoes_integrity::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct AddHashForPinnerInput {

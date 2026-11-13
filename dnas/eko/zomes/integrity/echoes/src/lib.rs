@@ -23,10 +23,10 @@ pub use liker_to_hashes::*;
 pub mod pinner_to_hashes;
 pub use pinner_to_hashes::*;
 pub mod echo;
-use hc_prefix_index::PrefixIndex;
-use hdi::prelude::*;
 pub use echo::*;
 pub use echo_types::*;
+use hc_prefix_index::PrefixIndex;
+use hdi::prelude::*;
 
 pub fn make_tag_prefix_index() -> ExternResult<PrefixIndex> {
     PrefixIndex::new("prefix_index".into(), LinkTypes::PrefixIndex, 3, 3)
@@ -380,18 +380,30 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                     tag,
                     tag_prefix_index,
                 ),
-                LinkTypes::EchoToResponses => {
-                    validate_create_link_echo_to_responses(action, base_address, target_address, tag)
-                }
-                LinkTypes::MentionToEchoes => {
-                    validate_create_link_mention_to_echoes(action, base_address, target_address, tag)
-                }
-                LinkTypes::HashtagToEchoes => {
-                    validate_create_link_hashtag_to_echoes(action, base_address, target_address, tag)
-                }
-                LinkTypes::CashtagToEchoes => {
-                    validate_create_link_cashtag_to_echoes(action, base_address, target_address, tag)
-                }
+                LinkTypes::EchoToResponses => validate_create_link_echo_to_responses(
+                    action,
+                    base_address,
+                    target_address,
+                    tag,
+                ),
+                LinkTypes::MentionToEchoes => validate_create_link_mention_to_echoes(
+                    action,
+                    base_address,
+                    target_address,
+                    tag,
+                ),
+                LinkTypes::HashtagToEchoes => validate_create_link_hashtag_to_echoes(
+                    action,
+                    base_address,
+                    target_address,
+                    tag,
+                ),
+                LinkTypes::CashtagToEchoes => validate_create_link_cashtag_to_echoes(
+                    action,
+                    base_address,
+                    target_address,
+                    tag,
+                ),
                 LinkTypes::FollowerToCreators => validate_create_link_follower_to_creators(
                     action,
                     base_address,

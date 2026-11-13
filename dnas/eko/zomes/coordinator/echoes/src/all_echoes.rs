@@ -1,5 +1,5 @@
-use hdk::prelude::*;
 use echoes_integrity::LinkTypes;
+use hdk::prelude::*;
 
 pub fn get_all_echo_hashes(strategy: GetStrategy) -> ExternResult<Vec<ActionHash>> {
     let path = Path::from("all_echoes");

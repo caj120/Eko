@@ -1,10 +1,10 @@
+use crate::echo_to_responses::*;
 use crate::liker_to_echoes::*;
 use crate::liker_to_hashes::IsLikerForHashInput;
-use crate::echo_to_responses::*;
 use crate::pinner_to_echoes::get_is_hash_pinned;
+use echoes_integrity::*;
 use hc_zome_input::ZomeFnInput;
 use hdk::prelude::*;
-use echoes_integrity::*;
 
 #[hdk_extern]
 pub fn get_echo_with_context(input: ZomeFnInput<ActionHash>) -> ExternResult<FeedEcho> {
@@ -170,15 +170,15 @@ pub fn get_batch_echoes_with_context_internal(
 ) -> ExternResult<Vec<FeedEcho>> {
     Ok(hashes
         .into_iter()
-        .filter_map(
-            |hash| match get_echo_with_context_internal(hash.clone(), get_options.clone()) {
+        .filter_map(|hash| {
+            match get_echo_with_context_internal(hash.clone(), get_options.clone()) {
                 Ok(feed_echo) => Some(feed_echo),
                 Err(e) => {
                     debug!("Skipping unavailable echo {:?}: {:?}", hash, e);
                     None
                 }
-            },
-        )
+            }
+        })
         .collect())
 }
 

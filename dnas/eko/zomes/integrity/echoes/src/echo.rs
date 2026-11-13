@@ -1,6 +1,6 @@
 use crate::dna_properties::*;
-use hdi::prelude::*;
 use echo_types::*;
+use hdi::prelude::*;
 
 pub fn validate_create_echo(
     action: EntryCreationAction,

@@ -6,6 +6,8 @@ integrity:
   properties:
     mew_characters_min: 10
     mew_characters_max: 200
+    credit_characters_min: 10
+    credit_characters_max: 280
   zomes:
     - name: profiles_integrity
       hash: ~
@@ -14,6 +16,14 @@ integrity:
     - name: mews_integrity
       hash: ~
       path: "../../../target/wasm32-unknown-unknown/release/mews_integrity.wasm"
+      dependencies: ~
+    # IMPORTANT: credits_integrity must stay LAST in this list.
+    # mews/src/mew.rs validates mewmews by matching on a hardcoded
+    # ZomeIndex(1), which is mews_integrity's position here. Inserting a zome
+    # above it silently breaks "a mew can only be mewmewed once".
+    - name: credits_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/credits_integrity.wasm"
       dependencies: ~
 coordinator:
   zomes:
@@ -28,3 +38,8 @@ coordinator:
       dependencies:
         - name: mews_integrity
         - name: profiles_integrity
+    - name: credits
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/credits.wasm"
+      dependencies:
+        - name: credits_integrity

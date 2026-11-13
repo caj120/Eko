@@ -27,6 +27,16 @@ path = "dnas/mewsfeed/zomes/coordinator/profiles"
 [workspace.dependencies.profiles_integrity]
 path = "dnas/mewsfeed/zomes/integrity/profiles"
 
+[workspace.dependencies.credits]
+path = "dnas/mewsfeed/zomes/coordinator/credits"
+
+[workspace.dependencies.credits_integrity]
+path = "dnas/mewsfeed/zomes/integrity/credits"
+
+[workspace.dependencies.credit_types]
+path = "crates/credit_types"
+
+
 [workspace.dependencies.hc_link_pagination]
 path = "crates/hc_link_pagination"
 

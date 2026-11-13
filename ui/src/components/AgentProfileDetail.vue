@@ -35,7 +35,7 @@ const { profile } = useProfile(computed(() => props.agentPubKey));
 
 const fetchJoinedTimestamp = async (): Promise<Timestamp | null> =>
   client.callZome({
-    role_name: "mewsfeed",
+    role_name: "eko",
     zome_name: "profiles",
     fn_name: "get_joining_timestamp_for_agent",
     payload: wrapInput(props.agentPubKey),

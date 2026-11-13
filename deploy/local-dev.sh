@@ -22,12 +22,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # --- Configurable via environment ---
-HAPP_BUNDLE_PATH="${HAPP_BUNDLE_PATH:-$PROJECT_DIR/workdir/mewsfeed.happ}"
+HAPP_BUNDLE_PATH="${HAPP_BUNDLE_PATH:-$PROJECT_DIR/workdir/eko.happ}"
 H2HC_LINKER_DIR="${H2HC_LINKER_DIR:-$PROJECT_DIR/../h2hc-linker}"
 JOINING_SERVICE_DIR="${JOINING_SERVICE_DIR:-$PROJECT_DIR/../joining-service}"
 LINKER_PORT="${LINKER_PORT:-8000}"
 JOINING_SERVICE_PORT="${JOINING_SERVICE_PORT:-3000}"
-SANDBOX_DIR="${SANDBOX_DIR:-/tmp/mewsfeed-local-dev}"
+SANDBOX_DIR="${SANDBOX_DIR:-/tmp/eko-local-dev}"
 NUM_CONDUCTORS="${NUM_CONDUCTORS:-2}"
 LINKER_ADMIN_SECRET="${LINKER_ADMIN_SECRET:-local-dev-secret}"
 AUTH_METHOD="${AUTH_METHOD:-invite_code}"
@@ -77,8 +77,8 @@ check_prereqs() {
     [ "$ok" = true ] || exit 1
 
     # Copy happ bundle to ui/public/ so the HWC extension can fetch it
-    cp "$HAPP_BUNDLE_PATH" "$PROJECT_DIR/ui/public/mewsfeed.happ"
-    log_info "Copied happ bundle to ui/public/mewsfeed.happ"
+    cp "$HAPP_BUNDLE_PATH" "$PROJECT_DIR/ui/public/eko.happ"
+    log_info "Copied happ bundle to ui/public/eko.happ"
 
     log_info "Prerequisites OK"
 }
@@ -149,8 +149,8 @@ start_conductor() {
     rm -rf "$DATA_DIR" "$LOG_FILE" 2>/dev/null || true
     mkdir -p "$DATA_DIR"
 
-    local APP_ID="mewsfeed"
-    [ "$INDEX" -gt 1 ] && APP_ID="mewsfeed_${INDEX}"
+    local APP_ID="eko"
+    [ "$INDEX" -gt 1 ] && APP_ID="eko_${INDEX}"
 
     (echo "test-passphrase" | \
         RUST_LOG="info,holochain=debug,kitsune2=debug" \
@@ -331,8 +331,8 @@ HJSON
         cat > "$CONFIG_FILE" <<JSONEOF
 {
   "happ": {
-    "id": "mewsfeed",
-    "name": "MewsFeed"
+    "id": "eko",
+    "name": "Eko"
   },
   "auth_methods": ["$AUTH_METHOD"],
   "invite_codes": $CODES_JSON,

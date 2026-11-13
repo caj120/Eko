@@ -1,6 +1,6 @@
 {
-  "name": "mewsfeed-ui-vue",
-  "description": "A UI for MewsFeed based on Vue",
+  "name": "eko-ui-vue",
+  "description": "A UI for Eko based on Vue",
   "author": "Jost Schulte",
   "version": "0.14.0",
   "type": "module",

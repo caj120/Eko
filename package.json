@@ -1,5 +1,5 @@
 {
-  "name": "mewsfeed",
+  "name": "eko",
   "private": true,
   "version": "0.14.0",
   "workspaces": [
@@ -14,8 +14,8 @@
     "stop:hwc": "./deploy/local-dev.sh stop",
     "network": "hc sandbox clean && npm run build:happ && UI_PORT=1420 concurrently \"npm run start --workspace ui\" \"npm run launch:spin\" \"hc playground\"",
     "network:tauri": "hc sandbox clean && npm run build:happ && UI_PORT=1420 concurrently \"npm run start --workspace ui\" \"npm run launch:tauri\" \"hc playground\"",
-    "launch:spin": "hc-spin -n $AGENTS --ui-port $UI_PORT workdir/mewsfeed.happ",
-    "launch:tauri": "concurrently \"hc run-local-services --bootstrap-port $BOOTSTRAP_PORT --signal-port $SIGNAL_PORT\" \"echo pass | WEBKIT_DISABLE_COMPOSITING_MODE=1 RUST_LOG=warn hc launch --piped -n $AGENTS workdir/mewsfeed.happ --ui-port $UI_PORT network --bootstrap http://127.0.0.1:\"$BOOTSTRAP_PORT\" webrtc ws://127.0.0.1:\"$SIGNAL_PORT\"\"",
+    "launch:spin": "hc-spin -n $AGENTS --ui-port $UI_PORT workdir/eko.happ",
+    "launch:tauri": "concurrently \"hc run-local-services --bootstrap-port $BOOTSTRAP_PORT --signal-port $SIGNAL_PORT\" \"echo pass | WEBKIT_DISABLE_COMPOSITING_MODE=1 RUST_LOG=warn hc launch --piped -n $AGENTS workdir/eko.happ --ui-port $UI_PORT network --bootstrap http://127.0.0.1:\"$BOOTSTRAP_PORT\" webrtc ws://127.0.0.1:\"$SIGNAL_PORT\"\"",
     "package": "npm run build:happ && npm run package --workspace ui && hc web-app pack workdir --recursive",
     "build:happ": "npm run build:zomes && hc app pack workdir --recursive && hc app pack workdir-no-limits --recursive",
     "build:zomes": "RUSTFLAGS='--cfg getrandom_backend=\"custom\"' cargo build --release --target wasm32-unknown-unknown",

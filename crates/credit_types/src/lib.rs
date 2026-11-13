@@ -47,7 +47,7 @@ pub struct HumanCredit {
     pub contribution: String,
     /// Optional unverified external token reference. See [`CreditRef`].
     pub credit_ref: Option<CreditRef>,
-    /// Optional mew this acknowledgment is attached to.
+    /// Optional echo this acknowledgment is attached to.
     pub attached_to: Option<ActionHash>,
 }
 

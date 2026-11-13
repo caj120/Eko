@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Mewsfeed Deployment Configuration
+# Eko Deployment Configuration
 # Copy this file to deploy/config.sh and fill in your values.
 #
 # Usage: cp deploy/config.example.sh deploy/config.sh
@@ -13,12 +13,12 @@ CLOUDFLARE_API_TOKEN=""
 CLOUDFLARE_WORKERS_SUBDOMAIN=""
 
 # Cloudflare project/worker names
-PAGES_PROJECT_NAME="mewsfeed"
+PAGES_PROJECT_NAME="eko"
 # Pages subdomain (may differ from project name if the subdomain was taken).
 # Check your project's Custom Domains in Cloudflare Pages dashboard.
 # Leave empty to default to PAGES_PROJECT_NAME.
 PAGES_SUBDOMAIN=""
-WORKER_NAME="mewsfeed-joining"
+WORKER_NAME="eko-joining"
 
 # --- Linker Auth ---
 # Shared secret between the linker and joining service.
@@ -35,10 +35,10 @@ INVITE_CODES="test-invite-123"
 HAPP_SOURCE="local"
 
 # Path to the .happ bundle file (used when HAPP_SOURCE="local").
-HAPP_BUNDLE_PATH="workdir/mewsfeed.happ"
+HAPP_BUNDLE_PATH="workdir/eko.happ"
 
 # GitHub repo for release downloads (used when HAPP_SOURCE="github").
-GITHUB_REPO="GeekGene/mewsfeed"
+GITHUB_REPO="GeekGene/eko"
 
 # GitHub release tag to download (used when HAPP_SOURCE="github").
 # Leave empty to use the latest release.
@@ -75,4 +75,4 @@ NGROK_BIN="ngrok"
 # --- Sandbox ---
 # Directory for local conductor/linker state.
 # Uses /tmp to avoid Unix socket path length limits.
-SANDBOX_DIR="/tmp/mewsfeed-deploy"
+SANDBOX_DIR="/tmp/eko-deploy"

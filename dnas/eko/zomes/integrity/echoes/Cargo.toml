@@ -1,0 +1,17 @@
+[package]
+name = "echoes_integrity"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "echoes_integrity"
+
+[dependencies]
+hdi = { workspace = true }
+hdk = { workspace = true }
+serde = { workspace = true }
+hc_prefix_index = { workspace = true }
+# prefix_index = { git = "https://github.com/holochain-open-dev/holochain-prefix-index", tag = "0.7.0", module = "lib/prefix_index" }
+echo_types = { workspace = true }
+holochain_serialized_bytes = { workspace = true }

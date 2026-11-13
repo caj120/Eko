@@ -11,30 +11,33 @@ hc_prefix_index = "0.14.0"
 holochain_serialized_bytes = "0.0.56"
 
 
-[workspace.dependencies.mews]
-path = "dnas/mewsfeed/zomes/coordinator/mews"
+[workspace.dependencies.echoes]
+path = "dnas/eko/zomes/coordinator/echoes"
 
-[workspace.dependencies.mews_integrity]
-path = "dnas/mewsfeed/zomes/integrity/mews"
+[workspace.dependencies.echoes_integrity]
+path = "dnas/eko/zomes/integrity/echoes"
 
-[workspace.dependencies.mews_types]
-path = "crates/mews_types"
+[workspace.dependencies.echo_types]
+path = "crates/echo_types"
 
 
 [workspace.dependencies.profiles]
-path = "dnas/mewsfeed/zomes/coordinator/profiles"
+path = "dnas/eko/zomes/coordinator/profiles"
 
 [workspace.dependencies.profiles_integrity]
-path = "dnas/mewsfeed/zomes/integrity/profiles"
+path = "dnas/eko/zomes/integrity/profiles"
 
 [workspace.dependencies.credits]
-path = "dnas/mewsfeed/zomes/coordinator/credits"
+path = "dnas/eko/zomes/coordinator/credits"
 
 [workspace.dependencies.credits_integrity]
-path = "dnas/mewsfeed/zomes/integrity/credits"
+path = "dnas/eko/zomes/integrity/credits"
 
 [workspace.dependencies.credit_types]
 path = "crates/credit_types"
+
+[workspace.dependencies.ledger_types]
+path = "crates/ledger_types"
 
 
 [workspace.dependencies.hc_link_pagination]

@@ -721,7 +721,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 
 [[package]]
-name = "mews"
+name = "echoes"
 version = "0.1.0"
 dependencies = [
  "hc_link_pagination",
@@ -729,27 +729,27 @@ dependencies = [
  "hc_zome_input",
  "hdk",
  "holochain_serialized_bytes",
- "mews_integrity",
- "mews_types",
+ "echoes_integrity",
+ "echo_types",
  "profiles_integrity",
  "regex",
  "serde",
 ]
 
 [[package]]
-name = "mews_integrity"
+name = "echoes_integrity"
 version = "0.0.1"
 dependencies = [
  "hc_prefix_index",
  "hdi",
  "hdk",
  "holochain_serialized_bytes",
- "mews_types",
+ "echo_types",
  "serde",
 ]
 
 [[package]]
-name = "mews_types"
+name = "echo_types"
 version = "0.0.1"
 dependencies = [
  "hc_link_pagination",

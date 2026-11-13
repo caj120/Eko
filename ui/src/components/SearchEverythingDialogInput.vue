@@ -135,8 +135,8 @@ const search = async (inputValue: string) => {
       const [profiles, tags] = await Promise.all([
         searchProfiles(inputValue),
         client.callZome({
-          role_name: "mewsfeed",
-          zome_name: "mews",
+          role_name: "eko",
+          zome_name: "echoes",
           fn_name: "search_tags",
           payload: wrapInput({
             query: inputValue,

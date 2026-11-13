@@ -1,12 +1,12 @@
-# Mewsfeed HWC Deployment
+# Eko HWC Deployment
 
-Deploy mewsfeed with the Holo Web Conductor (HWC) browser extension: UI on Cloudflare Pages, joining service on Cloudflare Worker, linker and conductors running locally.
+Deploy eko with the Holo Web Conductor (HWC) browser extension: UI on Cloudflare Pages, joining service on Cloudflare Worker, linker and conductors running locally.
 
 ## Architecture
 
 ```
 Browser (HWC extension)
-  → Cloudflare Pages (mewsfeed UI + .happ bundle)
+  → Cloudflare Pages (eko UI + .happ bundle)
   → Cloudflare Worker (joining service, invite_code auth)
   → Linker (local, tunneled via cloudflared, allow_list auth)
   → 2x Conductor (local, always-on, full-arc DHT nodes)
@@ -58,7 +58,7 @@ The script will output the Pages URL, Worker URL, tunnel URL, and invite code.
 | Command | Description |
 |---------|-------------|
 | `setup` | One-time Cloudflare setup (KV namespace, Pages project) |
-| `build` | Build mewsfeed UI with joining service URL baked in |
+| `build` | Build eko UI with joining service URL baked in |
 | `deploy-cloud` | Deploy worker + pages to Cloudflare |
 | `start-local` | Start conductors, linker, tunnel (cloudflared/ngrok), seed KV |
 | `stop-local` | Stop all local services |
@@ -76,7 +76,7 @@ See `config.example.sh` for all options. Key settings:
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID | (required) |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token | (required) |
 | `INVITE_CODES` | Comma-separated invite codes | `test-invite-123` |
-| `HAPP_BUNDLE_PATH` | Path to .happ bundle | `workdir/mewsfeed.happ` |
+| `HAPP_BUNDLE_PATH` | Path to .happ bundle | `workdir/eko.happ` |
 | `BOOTSTRAP_URL` | Kitsune2 bootstrap server | `https://dev-test-bootstrap2.holochain.org/` |
 | `NUM_CONDUCTORS` | Number of always-on conductors | `2` |
 | `TUNNEL_PROVIDER` | Tunnel provider | `cloudflared` |

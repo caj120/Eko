@@ -40,44 +40,44 @@
       />
     </template>
 
-    <!-- Pinned mews: loads independently with skeleton -->
+    <!-- Pinned echoes: loads independently with skeleton -->
     <BaseList
       class="my-8 px-4"
       title="pinned"
-      :items="pinnedMews"
-      :is-loading="isLoadingPinnedMews"
+      :items="pinnedEchoes"
+      :is-loading="isLoadingPinnedEchoes"
       :show-empty-list="false"
     >
       <template #loading>
         <BaseListSkeleton :count="2">
-          <BaseMewListItemSkeleton />
+          <BaseEchoListItemSkeleton />
         </BaseListSkeleton>
       </template>
       <template #default="{ item }">
-        <BaseMewListItem
-          :feed-mew="item"
-          @mew-pinned="patchPinnedAndRefresh"
-          @mew-unpinned="patchPinnedAndRefresh"
-          @mew-deleted="patchPinnedAndRefresh"
-          @mew-licked="patchPinnedMew"
-          @mew-unlicked="patchPinnedMew"
-          @reply-created="patchPinnedMew"
-          @mewmew-created="patchPinnedMew"
-          @quote-created="patchPinnedMew"
+        <BaseEchoListItem
+          :feed-echo="item"
+          @echo-pinned="patchPinnedAndRefresh"
+          @echo-unpinned="patchPinnedAndRefresh"
+          @echo-deleted="patchPinnedAndRefresh"
+          @echo-likeed="patchPinnedEcho"
+          @echo-unlikeed="patchPinnedEcho"
+          @reply-created="patchPinnedEcho"
+          @reecho-created="patchPinnedEcho"
+          @quote-created="patchPinnedEcho"
         />
       </template>
     </BaseList>
 
-    <!-- Authored mews: loads independently with skeleton -->
+    <!-- Authored echoes: loads independently with skeleton -->
     <BaseList
       class="my-8 px-4"
-      title="mews"
-      :items="authoredMews"
-      :is-loading="isLoadingAuthoredMews"
-      :enable-more-button="authoredMews && authoredMews.length >= pageLimit"
+      title="echoes"
+      :items="authoredEchoes"
+      :is-loading="isLoadingAuthoredEchoes"
+      :enable-more-button="authoredEchoes && authoredEchoes.length >= pageLimit"
       @click-more="
         router.push({
-          name: 'authoredMews',
+          name: 'authoredEchoes',
           params: {
             agentPubKey: route.params.agentPubKey,
           },
@@ -86,20 +86,20 @@
     >
       <template #loading>
         <BaseListSkeleton :count="3">
-          <BaseMewListItemSkeleton />
+          <BaseEchoListItemSkeleton />
         </BaseListSkeleton>
       </template>
       <template #default="{ item }">
-        <BaseMewListItem
-          :feed-mew="item"
-          @mew-pinned="patchAuthoredAndRefreshPins"
-          @mew-unpinned="patchAuthoredAndRefreshPins"
-          @mew-deleted="patchAuthoredAndRefreshPins"
-          @mew-licked="patchAuthoredMew"
-          @mew-unlicked="patchAuthoredMew"
-          @reply-created="patchAuthoredMew"
-          @mewmew-created="patchAuthoredMew"
-          @quote-created="patchAuthoredMew"
+        <BaseEchoListItem
+          :feed-echo="item"
+          @echo-pinned="patchAuthoredAndRefreshPins"
+          @echo-unpinned="patchAuthoredAndRefreshPins"
+          @echo-deleted="patchAuthoredAndRefreshPins"
+          @echo-likeed="patchAuthoredEcho"
+          @echo-unlikeed="patchAuthoredEcho"
+          @reply-created="patchAuthoredEcho"
+          @reecho-created="patchAuthoredEcho"
+          @quote-created="patchAuthoredEcho"
         />
       </template>
     </BaseList>
@@ -128,20 +128,20 @@ import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import BaseAgentProfileDetail from "@/components/BaseAgentProfileDetail.vue";
 import BaseAgentProfileDetailSkeleton from "@/components/BaseAgentProfileDetailSkeleton.vue";
 import BaseListSkeleton from "@/components/BaseListSkeleton.vue";
-import BaseMewListItemSkeleton from "@/components/BaseMewListItemSkeleton.vue";
+import BaseEchoListItemSkeleton from "@/components/BaseEchoListItemSkeleton.vue";
 import EditAgentProfileDialog from "@/components/EditAgentProfileDialog.vue";
 import FollowersListDialog from "@/components/FollowersListDialog.vue";
 import CreatorsListDialog from "@/components/CreatorsListDialog.vue";
 import { wrapInput } from "@/utils/zomeCall";
-import { usePatchFeedMew } from "@/composables/usePatchFeedMew";
-import { FeedMew } from "@/types/types";
+import { usePatchFeedEcho } from "@/composables/usePatchFeedEcho";
+import { FeedEcho } from "@/types/types";
 
 const client = (inject("client") as ComputedRef<AppClient>).value;
 const cellsReady = useCellsReady();
 const route = useRoute();
 const router = useRouter();
 const queryClient = useQueryClient();
-const { patchFeedMew } = usePatchFeedMew();
+const { patchFeedEcho } = usePatchFeedEcho();
 
 const agentPubKey = computed(() => {
   const key = route.params.agentPubKey as string;
@@ -154,12 +154,12 @@ const agentPubKeyB64 = computed(() => route.params.agentPubKey);
 const hasAgentPubKeyB64 = computed(() => agentPubKeyB64.value !== undefined);
 const pageLimit = 5;
 
-const fetchAuthoredMews = () => {
+const fetchAuthoredEchoes = () => {
   if (!agentPubKey.value) return [];
   return client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
-    fn_name: "get_agent_mews_with_context",
+    role_name: "eko",
+    zome_name: "echoes",
+    fn_name: "get_agent_echoes_with_context",
     payload: wrapInput({
       agent: agentPubKey.value,
       page: {
@@ -169,61 +169,61 @@ const fetchAuthoredMews = () => {
   });
 };
 
-const authoredMewsQueryKey = ["profiles", "get_agent_mews_with_context", agentPubKeyB64];
+const authoredEchoesQueryKey = ["profiles", "get_agent_echoes_with_context", agentPubKeyB64];
 
-const patchAuthoredMew = (updatedMew: FeedMew) => {
-  patchFeedMew(authoredMewsQueryKey, updatedMew);
+const patchAuthoredEcho = (updatedEcho: FeedEcho) => {
+  patchFeedEcho(authoredEchoesQueryKey, updatedEcho);
 };
 
 const {
-  data: authoredMews,
-  isLoading: isLoadingAuthoredMews,
-  error: errorAuthoredMews,
-  refetch: refetchAuthoredMews,
+  data: authoredEchoes,
+  isLoading: isLoadingAuthoredEchoes,
+  error: errorAuthoredEchoes,
+  refetch: refetchAuthoredEchoes,
 } = useQuery({
-  queryKey: authoredMewsQueryKey,
-  queryFn: fetchAuthoredMews,
+  queryKey: authoredEchoesQueryKey,
+  queryFn: fetchAuthoredEchoes,
   enabled: computed(() => cellsReady.value && hasAgentPubKeyB64.value),
 });
-watch(errorAuthoredMews, console.error);
+watch(errorAuthoredEchoes, console.error);
 
-const fetchPinnedMews = () => {
+const fetchPinnedEchoes = () => {
   if (!agentPubKey.value) return [];
   return client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
-    fn_name: "get_mews_for_pinner_with_context",
+    role_name: "eko",
+    zome_name: "echoes",
+    fn_name: "get_echoes_for_pinner_with_context",
     payload: wrapInput(agentPubKey.value),
   });
 };
 
-const pinnedMewsQueryKey = ["profiles", "get_mews_for_pinner_with_context", agentPubKeyB64];
+const pinnedEchoesQueryKey = ["profiles", "get_echoes_for_pinner_with_context", agentPubKeyB64];
 
-const patchPinnedMew = (updatedMew: FeedMew) => {
-  patchFeedMew(pinnedMewsQueryKey, updatedMew);
+const patchPinnedEcho = (updatedEcho: FeedEcho) => {
+  patchFeedEcho(pinnedEchoesQueryKey, updatedEcho);
 };
 
 const {
-  data: pinnedMews,
-  isLoading: isLoadingPinnedMews,
-  error: errorPinnedMews,
-  refetch: refetchPinnedMews,
+  data: pinnedEchoes,
+  isLoading: isLoadingPinnedEchoes,
+  error: errorPinnedEchoes,
+  refetch: refetchPinnedEchoes,
 } = useQuery({
-  queryKey: pinnedMewsQueryKey,
-  queryFn: fetchPinnedMews,
+  queryKey: pinnedEchoesQueryKey,
+  queryFn: fetchPinnedEchoes,
   enabled: computed(() => cellsReady.value && hasAgentPubKeyB64.value),
 });
-watch(errorPinnedMews, console.error);
+watch(errorPinnedEchoes, console.error);
 
-const patchPinnedAndRefresh = (m: FeedMew) => {
-  patchPinnedMew(m);
-  patchAuthoredMew(m);
-  refetchPinnedMews();
+const patchPinnedAndRefresh = (m: FeedEcho) => {
+  patchPinnedEcho(m);
+  patchAuthoredEcho(m);
+  refetchPinnedEchoes();
 };
 
-const patchAuthoredAndRefreshPins = (m: FeedMew) => {
-  patchAuthoredMew(m);
-  refetchPinnedMews();
+const patchAuthoredAndRefreshPins = (m: FeedEcho) => {
+  patchAuthoredEcho(m);
+  refetchPinnedEchoes();
 };
 
 const {
@@ -236,7 +236,7 @@ const {
 const fetchJoinedTimestamp = () => {
   if (!agentPubKey.value) return null;
   return client.callZome({
-    role_name: "mewsfeed",
+    role_name: "eko",
     zome_name: "profiles",
     fn_name: "get_joining_timestamp_for_agent",
     payload: wrapInput(agentPubKey.value),
@@ -261,8 +261,8 @@ watch(errorJoinedTimestamp, console.error);
 const fetchCreatorsCount = async (): Promise<number> => {
   if (!agentPubKey.value) return 0;
   return client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
+    role_name: "eko",
+    zome_name: "echoes",
     fn_name: "count_creators_for_follower",
     payload: wrapInput(agentPubKey.value),
   });
@@ -282,8 +282,8 @@ watch(errorCreatorsCount, console.error);
 const fetchFollowersCount = async (): Promise<number> => {
   if (!agentPubKey.value) return 0;
   return client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
+    role_name: "eko",
+    zome_name: "echoes",
     fn_name: "count_followers_for_creator",
     payload: wrapInput(agentPubKey.value),
   });
@@ -307,8 +307,8 @@ watch(
     if (!newKey) return;
     nextTick(() => {
       refreshProfile();
-      refetchAuthoredMews();
-      refetchPinnedMews();
+      refetchAuthoredEchoes();
+      refetchPinnedEchoes();
       refetchFollowersCount();
       refetchCreatorsCount();
     });

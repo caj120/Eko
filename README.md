@@ -1,21 +1,19 @@
-# mewsfeed
+# Eko
 
-We are currently working towards the first major release of MewsFeed.
+The app for the Human Ledger Framework.
 
-[Collaborate on GitHub](https://github.com/orgs/GeekGene/projects/1) and [join our Discord](https://discord.gg/D3BykUZumM)!
+A post is an **echo**. An acknowledgment of someone's contribution is a
+**credit**. Credits build a track record the subject cannot edit, and that
+record is what eventually backs a line of mutual credit.
 
-## Chat With Us
+Built on Holochain, so every entry lives on its author's own source chain and
+is validated by peers rather than held by a server.
 
-Come join us on mewsfeed. We're talking at the hashtags #mewsfeed and #holochain. Share your feedback by tagging #mewsfeedback!
+See [EKO.md](./EKO.md) for the architecture, the Human Credit data model and
+the mutual-credit plan.
 
-## Follow Us
-
-You can follow the team on mewsfeed at:
-
-@artbrock
-@zippy
-@mattyg
-@jost
+Forked from [GeekGene/MewsFeed](https://github.com/GeekGene/MewsFeed).
+See the provenance and licensing note in EKO.md before publishing.
 
 ## Environment Setup
 
@@ -85,7 +83,7 @@ All HWC-related repos must be siblings in the same parent directory:
 
 ```
 parent/
-├── mewsfeed/               # This repo
+├── eko/               # This repo
 ├── holo-web-conductor/     # Required (provides client library)
 ├── joining-service/        # Optional (for joining mode)
 └── h2hc-linker/            # Required (linker binary)
@@ -103,7 +101,7 @@ Use `--clone` to automatically clone missing repos, or `--download-linker` to fe
 Then install this repo's dependencies:
 
 ```bash
-cd ../mewsfeed
+cd ../eko
 nix develop -c npm install
 ```
 
@@ -127,7 +125,7 @@ npm run start:hwc:joining
 AUTH_METHOD=email_code npm run start:hwc:joining
 ```
 
-Email codes are written to `/tmp/mewsfeed-local-dev/dev-emails/`. Read the file to get the verification code.
+Email codes are written to `/tmp/eko-local-dev/dev-emails/`. Read the file to get the verification code.
 
 **With email code + hc_auth integration**:
 
@@ -144,7 +142,7 @@ npm run start:hwc:joining
 |---|---|---|
 | `AUTH_METHOD` | `invite_code` | Auth method: `invite_code`, `email_code`, `open` |
 | `INVITE_CODES` | `test-invite-123` | Comma-separated invite codes (for `invite_code` method) |
-| `EMAIL_OUTPUT_DIR` | `/tmp/mewsfeed-local-dev/dev-emails` | Directory for email-to-file dev emails |
+| `EMAIL_OUTPUT_DIR` | `/tmp/eko-local-dev/dev-emails` | Directory for email-to-file dev emails |
 | `HC_AUTH_URL` | _(empty)_ | hc_auth server URL (enables hc_auth notification on join) |
 | `HC_AUTH_TOKEN` | _(empty)_ | hc_auth API bearer token |
 | `HC_AUTH_FORWARD_CLAIMS` | _(empty)_ | Comma-separated claim keys to forward to hc_auth (e.g. `email,phone`) |
@@ -164,7 +162,7 @@ npm run start:hwc:joining
 
 ## Holo Web Conductor Deployment
 
-For deploying mewsfeed with the Holo Web Conductor (HWC) browser extension, see [deploy/DEPLOY.md](deploy/DEPLOY.md).
+For deploying eko with the Holo Web Conductor (HWC) browser extension, see [deploy/DEPLOY.md](deploy/DEPLOY.md).
 
 ## Package
 
@@ -174,9 +172,9 @@ To package the web happ:
 npm run package
 ```
 
-You'll have the `mewsfeed.webhapp` in `workdir`. This is what you should distribute so that the Holochain Launcher can install it.
+You'll have the `eko.webhapp` in `workdir`. This is what you should distribute so that the Holochain Launcher can install it.
 
-You will also have its subcomponent `mewsfeed.happ` in the same folder`.
+You will also have its subcomponent `eko.happ` in the same folder`.
 
 ## Documentation
 
@@ -184,5 +182,5 @@ We are using this tooling:
 
 - [NPM Workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/): npm v7's built-in monorepo capabilities.
 - [hc](https://github.com/holochain/holochain/tree/develop/crates/hc): Holochain CLI to easily manage Holochain development instances.
-- [@holochain/tryorama](https://www.npmjs.com/package/@holochain/tryorama): test framework.
+- [@holochain/tryorama](https://www.npmjs.com/package/@holochain/tryorama): test fraechoork.
 - [@holochain/conductor-api](https://www.npmjs.com/package/@holochain/conductor-api): client library to connect to Holochain from the UI.

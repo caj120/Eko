@@ -33,13 +33,13 @@ export interface RecordLinkTarget {
 
 export type LinkTarget = MentionLinkTarget | UrlLinkTarget | RecordLinkTarget;
 
-export type Mew = {
+export type Echo = {
   text: string | null;
   links: LinkTarget[];
-  mew_type: MewType;
+  echo_type: EchoType;
 };
 
-export enum MewTagType {
+export enum EchoTagType {
   Mention,
   Link,
   RawUrl,
@@ -47,51 +47,51 @@ export enum MewTagType {
   Hashtag,
 }
 
-export interface MewContentPart {
+export interface EchoContentPart {
   text: string;
   route?: RouteLocationNamedRaw;
   href?: string;
-  tagType?: MewTagType;
+  tagType?: EchoTagType;
 }
 
-export enum MewTypeName {
+export enum EchoTypeName {
   Original = "Original",
   Reply = "Reply",
-  Mewmew = "Mewmew",
+  Reecho = "Reecho",
   Quote = "Quote",
 }
 
-export type MewType =
-  | MewTypeName.Original
+export type EchoType =
+  | EchoTypeName.Original
   | {
-      [MewTypeName.Reply]: ActionHash;
+      [EchoTypeName.Reply]: ActionHash;
     }
   | {
-      [MewTypeName.Mewmew]: ActionHash;
+      [EchoTypeName.Reecho]: ActionHash;
     }
   | {
-      [MewTypeName.Quote]: ActionHash;
+      [EchoTypeName.Quote]: ActionHash;
     };
 
-export interface FeedMew {
-  mew: Mew;
+export interface FeedEcho {
+  echo: Echo;
   action: Create;
   action_hash: ActionHash;
   replies_count: number;
   quotes_count: number;
-  licks_count: number;
-  mewmews_count: number;
+  likes_count: number;
+  reechos_count: number;
   is_pinned: boolean;
-  is_licked: boolean;
-  is_mewmewed: boolean;
+  is_likeed: boolean;
+  is_reechoed: boolean;
   is_replied: boolean;
   is_quoted: boolean;
   deleted_timestamp: number | null;
-  original_mew: EmbedMew | null;
+  original_echo: EmbedEcho | null;
 }
 
-export interface EmbedMew {
-  mew: Mew;
+export interface EmbedEcho {
+  echo: Echo;
   action: Create;
   action_hash: ActionHash;
   deleted_timestamp: number | null;
@@ -138,9 +138,9 @@ export interface SigningCredentialsJson
   signingKey: number[];
 }
 
-export interface MewsfeedDnaProperties {
-  mew_characters_min: number | null;
-  mew_characters_max: number | null;
+export interface EkoDnaProperties {
+  echo_characters_min: number | null;
+  echo_characters_max: number | null;
 }
 
 export type SearchResultOption = {
@@ -159,22 +159,22 @@ export type NotificationKey = {
   notificationType: NotificationType;
   timestamp: number;
   agent: AgentPubKey;
-  mewActionHash: ActionHash | null;
+  echoActionHash: ActionHash | null;
 };
 
 export type Notification = {
   notification_type: NotificationType;
   timestamp: number;
   agent: AgentPubKey;
-  feed_mew: FeedMew | null;
+  feed_echo: FeedEcho | null;
 };
 
 export enum NotificationTypeName {
-  MyMewLicked = "MyMewLicked",
-  MyMewUnlicked = "MyMewUnlicked",
-  MyMewPinned = "MyMewPinned",
-  MyMewUnpinned = "MyMewUnpinned",
-  MyMewResponded = "MyMewResponded",
+  MyEchoLikeed = "MyEchoLikeed",
+  MyEchoUnlikeed = "MyEchoUnlikeed",
+  MyEchoPinned = "MyEchoPinned",
+  MyEchoUnpinned = "MyEchoUnpinned",
+  MyEchoResponded = "MyEchoResponded",
   MyAgentMentioned = "MyAgentMentioned",
   MyAgentFollowed = "MyAgentFollowed",
   MyAgentUnfollowed = "MyAgentUnfollowed",
@@ -182,11 +182,11 @@ export enum NotificationTypeName {
 }
 
 export type NotificationType =
-  | NotificationTypeName.MyMewLicked
-  | NotificationTypeName.MyMewUnlicked
-  | NotificationTypeName.MyMewPinned
-  | NotificationTypeName.MyMewUnpinned
-  | NotificationTypeName.MyMewResponded
+  | NotificationTypeName.MyEchoLikeed
+  | NotificationTypeName.MyEchoUnlikeed
+  | NotificationTypeName.MyEchoPinned
+  | NotificationTypeName.MyEchoUnpinned
+  | NotificationTypeName.MyEchoResponded
   | NotificationTypeName.MyAgentMentioned
   | NotificationTypeName.MyAgentFollowed
   | NotificationTypeName.MyAgentUnfollowed

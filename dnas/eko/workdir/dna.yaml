@@ -1,0 +1,45 @@
+---
+manifest_version: "0"
+name: eko
+integrity:
+  network_seed: ~
+  properties:
+    echo_characters_min: 10
+    echo_characters_max: 200
+    credit_characters_min: 10
+    credit_characters_max: 280
+  zomes:
+    - name: profiles_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/profiles_integrity.wasm"
+      dependencies: ~
+    - name: echoes_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/echoes_integrity.wasm"
+      dependencies: ~
+    # IMPORTANT: credits_integrity must stay LAST in this list.
+    # echoes/src/echo.rs validates reechoes by matching on a hardcoded
+    # ZomeIndex(1), which is echoes_integrity's position here. Inserting a zome
+    # above it silently breaks "an echo can only be reechoed once".
+    - name: credits_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/credits_integrity.wasm"
+      dependencies: ~
+coordinator:
+  zomes:
+    - name: profiles
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/profiles.wasm"
+      dependencies:
+        - name: profiles_integrity
+    - name: echoes
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/echoes.wasm"
+      dependencies:
+        - name: echoes_integrity
+        - name: profiles_integrity
+    - name: credits
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/credits.wasm"
+      dependencies:
+        - name: credits_integrity

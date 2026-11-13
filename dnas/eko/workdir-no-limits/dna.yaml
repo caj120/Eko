@@ -1,0 +1,52 @@
+---
+# Same zomes as ../workdir/dna.yaml, with character limits removed.
+#
+# NOTE: this manifest previously listed follows_integrity, likes_integrity,
+# agent_pins_integrity and ping. Those zome crates no longer exist in this
+# repo (follows/likes/pins are now link types inside the echoes zome), so
+# `npm run build:happ` failed while packing this DNA. Rewritten to match the
+# zomes that are actually built.
+#
+# Zome ORDER matters: echoes/src/echo.rs matches on a hardcoded ZomeIndex(1) when
+# validating reechoes, so echoes_integrity must stay second and credits_integrity
+# must stay last.
+manifest_version: "0"
+name: eko
+integrity:
+  network_seed: ~
+  properties:
+    echo_characters_min: ~
+    echo_characters_max: ~
+    credit_characters_min: ~
+    credit_characters_max: ~
+  zomes:
+    - name: profiles_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/profiles_integrity.wasm"
+      dependencies: ~
+    - name: echoes_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/echoes_integrity.wasm"
+      dependencies: ~
+    - name: credits_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/credits_integrity.wasm"
+      dependencies: ~
+coordinator:
+  zomes:
+    - name: profiles
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/profiles.wasm"
+      dependencies:
+        - name: profiles_integrity
+    - name: echoes
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/echoes.wasm"
+      dependencies:
+        - name: echoes_integrity
+        - name: profiles_integrity
+    - name: credits
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/credits.wasm"
+      dependencies:
+        - name: credits_integrity

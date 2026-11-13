@@ -72,8 +72,8 @@ const pageLimit = 10;
 
 const fetchCreators = async (params: any) => {
   const agents: AgentPubKey[] = await client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
+    role_name: "eko",
+    zome_name: "echoes",
     fn_name: "get_creators_for_follower",
     payload: wrapInput({
       follower: props.agentPubKey,
@@ -107,7 +107,7 @@ const fetchCreators = async (params: any) => {
 
 const { data, error, fetchNextPage, hasNextPage, isInitialLoading, refetch } =
   useInfiniteQuery({
-    queryKey: ["mews", "get_creators_for_follower", agentPubKeyB64],
+    queryKey: ["echoes", "get_creators_for_follower", agentPubKeyB64],
     queryFn: fetchCreators,
     getNextPageParam: (lastPage) => {
       if (lastPage.length === 0) return;
@@ -133,7 +133,7 @@ onBeforeRouteLeave(() => {
   if (data.value && data.value.pages.length > 1) {
     queryClient.setQueryData(
       [
-        "mews",
+        "echoes",
         "get_creators_for_follower",
         encodeHashToBase64(props.agentPubKey),
       ],

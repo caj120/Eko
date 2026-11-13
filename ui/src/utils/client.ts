@@ -3,7 +3,7 @@ import { waitForHolochain } from "@/hwc";
 import { connectWithJoiningUI } from "@holo-host/web-conductor-client/ui";
 import { getRuntime, Runtime } from "@holo-host/web-conductor-client/runtime";
 
-export const HOLOCHAIN_APP_ID = "mewsfeed";
+export const HOLOCHAIN_APP_ID = "eko";
 
 // Joining service URL (compile-time or empty)
 declare const __JOINING_SERVICE_URL__: string;
@@ -45,7 +45,7 @@ export const setupHolochain = async (opts?: SetupHolochainOptions) => {
         params.get("joiningServiceUrl") || JOINING_SERVICE_URL || undefined;
       console.log("HWC runtime context, joiningServiceUrl:", joiningServiceUrl || "(empty)");
       const hwcClient = await connectWithJoiningUI({
-        roleName: "mewsfeed",
+        roleName: "eko",
         ...(linkerUrl && { linkerUrl }),
         ...(joiningServiceUrl && {
           joiningServiceUrl,
@@ -82,9 +82,9 @@ const createClient = async () => {
     token: issued.token,
     defaultTimeout: 60000,
   });
-  const cellInfo = client.cachedAppInfo?.cell_info.mewsfeed[0];
+  const cellInfo = client.cachedAppInfo?.cell_info.eko[0];
   if (!cellInfo || cellInfo.type !== CellType.Provisioned) {
-    throw new Error("mewsfeed cell not provisioned");
+    throw new Error("eko cell not provisioned");
   }
   const { cell_id } = cellInfo.value;
   await adminWs.authorizeSigningCredentials(cell_id);

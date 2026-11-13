@@ -1,13 +1,13 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import { TAG_SYMBOLS } from "./utils/tags";
 import DiscoverCreators from "./pages/DiscoverCreators.vue";
-import MewsFeed from "./pages/MewsFeed.vue";
+import Eko from "./pages/Eko.vue";
 import AgentProfile from "./pages/AgentProfile.vue";
-import MewYarn from "./pages/MewYarn.vue";
-import MewsListCashtag from "./pages/MewsListCashtag.vue";
-import MewsListHashtag from "./pages/MewsListHashtag.vue";
-import MewsListMention from "./pages/MewsListMention.vue";
-import MewsListAuthor from "./pages/MewsListAuthor.vue";
+import EchoYarn from "./pages/EchoYarn.vue";
+import EchoesListCashtag from "./pages/EchoesListCashtag.vue";
+import EchoesListHashtag from "./pages/EchoesListHashtag.vue";
+import EchoesListMention from "./pages/EchoesListMention.vue";
+import EchoesListAuthor from "./pages/EchoesListAuthor.vue";
 import NotFound from "./pages/NotFound.vue";
 import MyNotifications from "./pages/MyNotifications.vue";
 import { getHomeRedirect } from "./utils/homeRedirect";
@@ -16,7 +16,7 @@ export const ROUTES = {
   landing: "landing",
   discover: "discover",
   profile: "profile",
-  authoredMews: "authoredMews",
+  authoredEchoes: "authoredEchoes",
   creators: "creators",
   followers: "followers",
   notifications: "notifications",
@@ -41,7 +41,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/feed",
     name: ROUTES.feed,
-    component: MewsFeed,
+    component: Eko,
   },
   {
     path: "/profiles/:agentPubKey",
@@ -49,9 +49,9 @@ export const routes: RouteRecordRaw[] = [
     component: AgentProfile,
   },
   {
-    path: "/profiles/:agentPubKey/mews",
-    name: ROUTES.authoredMews,
-    component: MewsListAuthor,
+    path: "/profiles/:agentPubKey/echoes",
+    name: ROUTES.authoredEchoes,
+    component: EchoesListAuthor,
   },
   {
     path: "/notifications",
@@ -66,24 +66,24 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/yarn/:actionHash",
     name: ROUTES.yarn,
-    component: MewYarn,
+    component: EchoYarn,
   },
   {
     path: `/cashtag/:tag`,
     name: ROUTES.cashtag,
-    component: MewsListCashtag,
+    component: EchoesListCashtag,
     meta: { tag: TAG_SYMBOLS.CASHTAG },
   },
   {
     path: `/hashtag/:tag`,
     name: ROUTES.hashtag,
-    component: MewsListHashtag,
+    component: EchoesListHashtag,
     meta: { tag: TAG_SYMBOLS.HASHTAG },
   },
   {
     path: `/mention/:tag/:agentPubKey`,
     name: ROUTES.mention,
-    component: MewsListMention,
+    component: EchoesListMention,
     meta: { tag: TAG_SYMBOLS.MENTION },
   },
   { path: "/:pathMatch(.*)", component: NotFound },

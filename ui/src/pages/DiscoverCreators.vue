@@ -15,34 +15,34 @@
     </div>
 
     <BaseList
-      title="random mews"
+      title="random echoes"
       class="mb-8"
-      :items="randomMews"
-      :is-loading="isLoadingRandomMewHashes || isFetchingRandomMews"
+      :items="randomEchoes"
+      :is-loading="isLoadingRandomEchoHashes || isFetchingRandomEchoes"
     >
       <template #default="{ item }">
-        <BaseMewListItem
-          :feed-mew="item"
-          @mew-deleted="patchRandomMew"
-          @mew-licked="patchRandomMew"
-          @mew-unlicked="patchRandomMew"
-          @mew-pinned="patchRandomMew"
-          @mew-unpinned="patchRandomMew"
-          @mewmew-created="patchRandomMew"
-          @reply-created="patchRandomMew"
-          @quote-created="patchRandomMew"
+        <BaseEchoListItem
+          :feed-echo="item"
+          @echo-deleted="patchRandomEcho"
+          @echo-likeed="patchRandomEcho"
+          @echo-unlikeed="patchRandomEcho"
+          @echo-pinned="patchRandomEcho"
+          @echo-unpinned="patchRandomEcho"
+          @reecho-created="patchRandomEcho"
+          @reply-created="patchRandomEcho"
+          @quote-created="patchRandomEcho"
         />
       </template>
       <template #loading>
         <BaseListSkeleton :count="4">
-          <BaseMewListItemSkeleton />
+          <BaseEchoListItemSkeleton />
         </BaseListSkeleton>
       </template>
     </BaseList>
 
-    <RandomMewWithTagList v-if="tag1 !== undefined" :tag="tag1" />
-    <RandomMewWithTagList v-if="tag2 !== undefined" :tag="tag2" />
-    <RandomMewWithTagList v-if="tag3 !== undefined" :tag="tag3" />
+    <RandomEchoWithTagList v-if="tag1 !== undefined" :tag="tag1" />
+    <RandomEchoWithTagList v-if="tag2 !== undefined" :tag="tag2" />
+    <RandomEchoWithTagList v-if="tag3 !== undefined" :tag="tag3" />
   </div>
 </template>
 
@@ -51,80 +51,80 @@ import { ComputedRef, computed, inject, onMounted, ref, toRaw, watch } from "vue
 import { useCellsReady } from "@/composables/useCellsReady";
 import { AppClient } from "@holochain/client";
 import BaseList from "@/components/BaseList.vue";
-import { FeedMew } from "@/types/types";
+import { FeedEcho } from "@/types/types";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
-import { usePatchFeedMew } from "@/composables/usePatchFeedMew";
+import { usePatchFeedEcho } from "@/composables/usePatchFeedEcho";
 import IconDiceOutline from "~icons/ion/dice-outline";
 import { ActionHash } from "@holochain/client";
 import BaseListSkeleton from "@/components/BaseListSkeleton.vue";
-import BaseMewListItemSkeleton from "@/components/BaseMewListItemSkeleton.vue";
+import BaseEchoListItemSkeleton from "@/components/BaseEchoListItemSkeleton.vue";
 import { wrapInput } from "@/utils/zomeCall";
 
 const client = (inject("client") as ComputedRef<AppClient>).value;
 const cellsReady = useCellsReady();
-const { patchFeedMew } = usePatchFeedMew();
+const { patchFeedEcho } = usePatchFeedEcho();
 
-const fetchRandomMewHashes = (): Promise<ActionHash[]> =>
+const fetchRandomEchoHashes = (): Promise<ActionHash[]> =>
   client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
-    fn_name: "get_random_mew_hashes",
+    role_name: "eko",
+    zome_name: "echoes",
+    fn_name: "get_random_echo_hashes",
     payload: wrapInput(3),
   });
 
-const fetchMewsWithContext = async (hashes: ActionHash[]): Promise<FeedMew[]> =>
+const fetchEchoesWithContext = async (hashes: ActionHash[]): Promise<FeedEcho[]> =>
   client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
-    fn_name: "get_batch_mews_with_context",
+    role_name: "eko",
+    zome_name: "echoes",
+    fn_name: "get_batch_echoes_with_context",
     payload: wrapInput(hashes),
   });
 
 const {
-  data: randomMewHashes,
-  error: errorRandomMewHashes,
-  isLoading: isLoadingRandomMewHashes,
-  refetch: refetchRandomMewHashes,
+  data: randomEchoHashes,
+  error: errorRandomEchoHashes,
+  isLoading: isLoadingRandomEchoHashes,
+  refetch: refetchRandomEchoHashes,
 } = useQuery({
-  queryKey: ["mews", "get_random_mew_hashes"],
-  queryFn: () => fetchRandomMewHashes(),
+  queryKey: ["echoes", "get_random_echo_hashes"],
+  queryFn: () => fetchRandomEchoHashes(),
   refetchOnWindowFocus: false,
   refetchOnMount: false,
   refetchOnReconnect: false,
   enabled: cellsReady,
 });
-watch(errorRandomMewHashes, console.error);
+watch(errorRandomEchoHashes, console.error);
 
-const hasRandomMewHashes = computed(
-  () => randomMewHashes.value !== undefined && randomMewHashes.value.length > 0
+const hasRandomEchoHashes = computed(
+  () => randomEchoHashes.value !== undefined && randomEchoHashes.value.length > 0
 );
 
-const randomMewsQueryKey = ["mews", "get_random_mew_hashes", "get_batch_mews_with_context"];
+const randomEchoesQueryKey = ["echoes", "get_random_echo_hashes", "get_batch_echoes_with_context"];
 
-const patchRandomMew = (updatedMew: FeedMew) => {
-  patchFeedMew(randomMewsQueryKey, updatedMew);
+const patchRandomEcho = (updatedEcho: FeedEcho) => {
+  patchFeedEcho(randomEchoesQueryKey, updatedEcho);
 };
 
 const {
-  data: randomMews,
-  error: errorRandomMews,
-  refetch: refetchRandomMews,
-  isFetching: isFetchingRandomMews,
+  data: randomEchoes,
+  error: errorRandomEchoes,
+  refetch: refetchRandomEchoes,
+  isFetching: isFetchingRandomEchoes,
 } = useQuery({
-  queryKey: randomMewsQueryKey,
-  enabled: computed(() => cellsReady.value && hasRandomMewHashes.value),
+  queryKey: randomEchoesQueryKey,
+  enabled: computed(() => cellsReady.value && hasRandomEchoHashes.value),
   queryFn: () =>
-    fetchMewsWithContext(toRaw(randomMewHashes.value as ActionHash[])),
+    fetchEchoesWithContext(toRaw(randomEchoHashes.value as ActionHash[])),
   refetchOnWindowFocus: false,
   refetchOnMount: false,
   refetchOnReconnect: false,
 });
-watch(errorRandomMews, console.error);
+watch(errorRandomEchoes, console.error);
 
 const fetchRandomTags = (): Promise<string[]> => {
   return client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
+    role_name: "eko",
+    zome_name: "echoes",
     fn_name: "get_random_tags",
     payload: wrapInput(4),
   });
@@ -135,7 +135,7 @@ const {
   error: errorRandomTags,
   refetch: refetchRandomTags,
 } = useQuery({
-  queryKey: ["mews", "get_random_tags"],
+  queryKey: ["echoes", "get_random_tags"],
   queryFn: fetchRandomTags,
   initialData: [],
   refetchOnWindowFocus: false,
@@ -146,8 +146,8 @@ const {
 watch(errorRandomTags, console.error);
 
 onMounted(async () => {
-  if (randomMews.value === undefined || randomMews.value.length === 0) {
-    await refetchMews();
+  if (randomEchoes.value === undefined || randomEchoes.value.length === 0) {
+    await refetchEchoes();
   }
   if (randomTags.value === undefined || randomTags.value.length === 0) {
     refetchRandomTags();
@@ -169,17 +169,17 @@ const isShuffling = ref(false);
 const shuffle = async () => {
   isShuffling.value = true;
   try {
-    await refetchMews();
+    await refetchEchoes();
     await refetchRandomTags();
   } finally {
     isShuffling.value = false;
   }
 };
 
-const refetchMews = async () => {
-  await refetchRandomMewHashes();
-  if (hasRandomMewHashes.value) {
-    refetchRandomMews();
+const refetchEchoes = async () => {
+  await refetchRandomEchoHashes();
+  if (hasRandomEchoHashes.value) {
+    refetchRandomEchoes();
   }
 };
 </script>

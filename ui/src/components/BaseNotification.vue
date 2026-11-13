@@ -48,7 +48,7 @@
             :agentPubKey="notification.agent"
   
           />
-          <div class="font-mono">Mentioned you in a mew</div>
+          <div class="font-mono">Mentioned you in an echo</div>
         </div>
         <div>
           <BaseTimestamp
@@ -58,8 +58,8 @@
         </div>
       </div>
       <div class="bg-base-200 rounded-xl mt-4 mx-4">
-        <BaseMewListItem
-          :feed-mew="(notification.feed_mew as FeedMew)"
+        <BaseEchoListItem
+          :feed-echo="(notification.feed_echo as FeedEcho)"
           v-bind="$attrs"
         />
       </div>
@@ -67,7 +67,7 @@
 
     <div
       v-else-if="
-        notification.notification_type === NotificationTypeName.MyMewLicked
+        notification.notification_type === NotificationTypeName.MyEchoLikeed
       "
       class="py-2 w-full"
     >
@@ -77,7 +77,7 @@
             :agentPubKey="notification.agent"
   
           />
-          <div class="font-mono">Licked your mew</div>
+          <div class="font-mono">Likeed your echo</div>
         </div>
         <div>
           <BaseTimestamp
@@ -87,8 +87,8 @@
         </div>
       </div>
       <div class="bg-base-200 rounded-xl mt-4 mx-4">
-        <BaseMewListItem
-          :feed-mew="(notification.feed_mew as FeedMew)"
+        <BaseEchoListItem
+          :feed-echo="(notification.feed_echo as FeedEcho)"
           v-bind="$attrs"
         />
       </div>
@@ -96,7 +96,7 @@
 
     <div
       v-else-if="
-        notification.notification_type === NotificationTypeName.MyMewUnlicked
+        notification.notification_type === NotificationTypeName.MyEchoUnlikeed
       "
       style="width: 100%"
       class="w-full py-2"
@@ -107,7 +107,7 @@
             :agentPubKey="notification.agent"
   
           />
-          <div class="font-mono">Unlicked your mew</div>
+          <div class="font-mono">Unlikeed your echo</div>
         </div>
         <div>
           <BaseTimestamp
@@ -117,8 +117,8 @@
         </div>
       </div>
       <div class="bg-base-200 rounded-xl mt-4 mx-4">
-        <BaseMewListItem
-          :feed-mew="(notification.feed_mew as FeedMew)"
+        <BaseEchoListItem
+          :feed-echo="(notification.feed_echo as FeedEcho)"
           v-bind="$attrs"
         />
       </div>
@@ -126,7 +126,7 @@
 
     <div
       v-else-if="
-        notification.notification_type === NotificationTypeName.MyMewPinned
+        notification.notification_type === NotificationTypeName.MyEchoPinned
       "
       class="w-full py-2"
     >
@@ -136,7 +136,7 @@
             :agentPubKey="notification.agent"
   
           />
-          <div class="font-mono">Pinned your mew</div>
+          <div class="font-mono">Pinned your echo</div>
         </div>
         <div>
           <BaseTimestamp
@@ -146,8 +146,8 @@
         </div>
       </div>
       <div class="bg-base-200 rounded-xl mt-4 mx-4">
-        <BaseMewListItem
-          :feed-mew="(notification.feed_mew as FeedMew)"
+        <BaseEchoListItem
+          :feed-echo="(notification.feed_echo as FeedEcho)"
           v-bind="$attrs"
         />
       </div>
@@ -155,7 +155,7 @@
 
     <div
       v-else-if="
-        notification.notification_type === NotificationTypeName.MyMewUnpinned
+        notification.notification_type === NotificationTypeName.MyEchoUnpinned
       "
       class="py-2 w-full"
     >
@@ -165,7 +165,7 @@
             :agentPubKey="notification.agent"
   
           />
-          <div class="font-mono">Unpinned your mew</div>
+          <div class="font-mono">Unpinned your echo</div>
         </div>
         <div>
           <BaseTimestamp
@@ -175,8 +175,8 @@
         </div>
       </div>
       <div class="bg-base-200 rounded-xl mt-4 mx-4">
-        <BaseMewListItem
-          :feed-mew="(notification.feed_mew as FeedMew)"
+        <BaseEchoListItem
+          :feed-echo="(notification.feed_echo as FeedEcho)"
           v-bind="$attrs"
         />
       </div>
@@ -184,7 +184,7 @@
 
     <div
       v-else-if="
-        notification.notification_type === NotificationTypeName.MyMewResponded
+        notification.notification_type === NotificationTypeName.MyEchoResponded
       "
       class="w-full py-2"
     >
@@ -196,33 +196,33 @@
           />
           <div
             v-if="
-              notification.feed_mew &&
-              typeof notification.feed_mew.mew.mew_type === 'object' &&
-              MewTypeName.Reply in notification.feed_mew.mew.mew_type
+              notification.feed_echo &&
+              typeof notification.feed_echo.echo.echo_type === 'object' &&
+              EchoTypeName.Reply in notification.feed_echo.echo.echo_type
             "
             class="font-mono"
           >
-            Replied to your mew
+            Replied to your echo
           </div>
           <div
             v-else-if="
-              notification.feed_mew &&
-              typeof notification.feed_mew.mew.mew_type === 'object' &&
-              MewTypeName.Quote in notification.feed_mew.mew.mew_type
+              notification.feed_echo &&
+              typeof notification.feed_echo.echo.echo_type === 'object' &&
+              EchoTypeName.Quote in notification.feed_echo.echo.echo_type
             "
             class="font-mono"
           >
-            Quoted your mew
+            Quoted your echo
           </div>
           <div
             v-else-if="
-              notification.feed_mew &&
-              typeof notification.feed_mew.mew.mew_type === 'object' &&
-              MewTypeName.Mewmew in notification.feed_mew.mew.mew_type
+              notification.feed_echo &&
+              typeof notification.feed_echo.echo.echo_type === 'object' &&
+              EchoTypeName.Reecho in notification.feed_echo.echo.echo_type
             "
             class="font-mono"
           >
-            Mewmewed your mew
+            Reechoed your echo
           </div>
         </div>
         <div>
@@ -233,8 +233,8 @@
         </div>
       </div>
       <div class="bg-base-200 rounded-xl mt-4 mx-4">
-        <BaseMewListItem
-          :feed-mew="(notification.feed_mew as FeedMew)"
+        <BaseEchoListItem
+          :feed-echo="(notification.feed_echo as FeedEcho)"
           v-bind="$attrs"
         />
       </div>
@@ -255,9 +255,9 @@
           />
           <div
             v-if="
-              notification.feed_mew &&
-              typeof notification.feed_mew.mew.mew_type === 'object' &&
-              MewTypeName.Reply in notification.feed_mew.mew.mew_type
+              notification.feed_echo &&
+              typeof notification.feed_echo.echo.echo_type === 'object' &&
+              EchoTypeName.Reply in notification.feed_echo.echo.echo_type
             "
             class="font-mono"
           >
@@ -265,9 +265,9 @@
           </div>
           <div
             v-else-if="
-              notification.feed_mew &&
-              typeof notification.feed_mew.mew.mew_type === 'object' &&
-              MewTypeName.Quote in notification.feed_mew.mew.mew_type
+              notification.feed_echo &&
+              typeof notification.feed_echo.echo.echo_type === 'object' &&
+              EchoTypeName.Quote in notification.feed_echo.echo.echo_type
             "
             class="font-mono"
           >
@@ -275,13 +275,13 @@
           </div>
           <div
             v-else-if="
-              notification.feed_mew &&
-              typeof notification.feed_mew.mew.mew_type === 'object' &&
-              MewTypeName.Mewmew in notification.feed_mew.mew.mew_type
+              notification.feed_echo &&
+              typeof notification.feed_echo.echo.echo_type === 'object' &&
+              EchoTypeName.Reecho in notification.feed_echo.echo.echo_type
             "
             class="font-mono"
           >
-            Memewed a yarn you participated in
+            Meechoed a yarn you participated in
           </div>
         </div>
         <div>
@@ -292,8 +292,8 @@
         </div>
       </div>
       <div class="bg-base-200 rounded-xl mt-4 mx-4">
-        <BaseMewListItem
-          :feed-mew="(notification.feed_mew as FeedMew)"
+        <BaseEchoListItem
+          :feed-echo="(notification.feed_echo as FeedEcho)"
           v-bind="$attrs"
         />
       </div>
@@ -305,12 +305,12 @@
 import {
   NotificationTypeName,
   Notification,
-  FeedMew,
-  MewTypeName,
+  FeedEcho,
+  EchoTypeName,
 } from "@/types/types";
 import BaseTimestamp from "@/components/BaseTimestamp.vue";
 import BaseAgentProfileLinkName from "@/components/BaseAgentProfileLinkName.vue";
-import BaseMewListItem from "@/components/BaseMewListItem.vue";
+import BaseEchoListItem from "@/components/BaseEchoListItem.vue";
 
 defineProps<{
   notification: Notification;

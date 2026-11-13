@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# Mewsfeed Deployment Script
+# Eko Deployment Script
 #
 # Orchestrates a full e2e deployment:
 #   - Cloudflare Worker (joining service with invite_code auth)
-#   - Cloudflare Pages (mewsfeed UI + .happ bundle)
+#   - Cloudflare Pages (eko UI + .happ bundle)
 #   - Local linker (h2hc-linker with allow_list auth, tunneled via cloudflared/ngrok)
 #   - Local conductors (2x always-on nodes)
 #
@@ -13,7 +13,7 @@
 #
 # Commands:
 #   setup        One-time setup: create KV namespace, Pages project
-#   build        Build mewsfeed UI with joining service URL
+#   build        Build eko UI with joining service URL
 #   deploy-cloud Deploy worker + pages to Cloudflare
 #   start-local  Start conductors, linker, tunnel, and seed KV
 #   stop-local      Stop all local services (tunnel, linker, conductors)
@@ -64,15 +64,15 @@ load_config() {
 
     # Defaults
     HAPP_SOURCE="${HAPP_SOURCE:-local}"
-    GITHUB_REPO="${GITHUB_REPO:-GeekGene/mewsfeed}"
+    GITHUB_REPO="${GITHUB_REPO:-GeekGene/eko}"
     GITHUB_RELEASE_TAG="${GITHUB_RELEASE_TAG:-}"
-    SANDBOX_DIR="${SANDBOX_DIR:-/tmp/mewsfeed-deploy}"
+    SANDBOX_DIR="${SANDBOX_DIR:-/tmp/eko-deploy}"
     LINKER_PORT="${LINKER_PORT:-8000}"
     NUM_CONDUCTORS="${NUM_CONDUCTORS:-2}"
     BOOTSTRAP_URL="${BOOTSTRAP_URL:-https://dev-test-bootstrap2.holochain.org/}"
     RELAY_URL="${RELAY_URL:-https://use1-1.relay.n0.iroh-canary.iroh.link./}"
-    PAGES_PROJECT_NAME="${PAGES_PROJECT_NAME:-mewsfeed}"
-    WORKER_NAME="${WORKER_NAME:-mewsfeed-joining}"
+    PAGES_PROJECT_NAME="${PAGES_PROJECT_NAME:-eko}"
+    WORKER_NAME="${WORKER_NAME:-eko-joining}"
     TUNNEL_PROVIDER="${TUNNEL_PROVIDER:-cloudflared}"
     CLOUDFLARED_BIN="${CLOUDFLARED_BIN:-cloudflared}"
     NGROK_BIN="${NGROK_BIN:-ngrok}"
@@ -96,7 +96,7 @@ read_state() { cat "$SANDBOX_DIR/$1" 2>/dev/null || echo ""; }
 
 resolve_happ() {
     if [ "$HAPP_SOURCE" = "github" ]; then
-        local dest="$SANDBOX_DIR/mewsfeed.happ"
+        local dest="$SANDBOX_DIR/eko.happ"
         mkdir -p "$SANDBOX_DIR"
         local tag_arg=""
         if [ -n "$GITHUB_RELEASE_TAG" ]; then
@@ -105,7 +105,7 @@ resolve_happ() {
         else
             log_info "Downloading .happ from latest GitHub release ($GITHUB_REPO)..."
         fi
-        gh release download $tag_arg --repo "$GITHUB_REPO" --pattern "mewsfeed.happ" --dir "$SANDBOX_DIR" --clobber
+        gh release download $tag_arg --repo "$GITHUB_REPO" --pattern "eko.happ" --dir "$SANDBOX_DIR" --clobber
         HAPP_BUNDLE_PATH="$dest"
         log_info "Using .happ from GitHub: $HAPP_BUNDLE_PATH"
     else
@@ -197,11 +197,11 @@ cmd_setup() {
 }
 
 # ──────────────────────────────────────────────
-# build: Build mewsfeed UI
+# build: Build eko UI
 # ──────────────────────────────────────────────
 
 cmd_build() {
-    log_step "Building mewsfeed UI..."
+    log_step "Building eko UI..."
 
     local worker_url="https://${WORKER_NAME}.${CLOUDFLARE_WORKERS_SUBDOMAIN}.workers.dev/v1"
 
@@ -226,8 +226,8 @@ RTEOF
 
     # Copy hApp bundle into dist for Pages hosting
     resolve_happ
-    cp "$HAPP_BUNDLE_PATH" "$PROJECT_DIR/ui/dist/mewsfeed.happ"
-    log_info "Copied .happ bundle to dist/mewsfeed.happ"
+    cp "$HAPP_BUNDLE_PATH" "$PROJECT_DIR/ui/dist/eko.happ"
+    log_info "Copied .happ bundle to dist/eko.happ"
 
     log_info "UI built successfully"
 }
@@ -255,9 +255,9 @@ cmd_deploy_cloud() {
     config_json=$(cat <<ENDJSON
 {
   "happ": {
-    "id": "mewsfeed",
-    "name": "MewsFeed",
-    "happ_bundle_url": "${pages_url}/mewsfeed.happ"
+    "id": "eko",
+    "name": "Eko",
+    "happ_bundle_url": "${pages_url}/eko.happ"
   },
   "auth_methods": ["invite_code"],
   "invite_codes": ${invite_codes_json},
@@ -367,7 +367,7 @@ start_conductors() {
     fi
 
     # Kill stale processes before starting fresh
-    pkill -f "holochain.*mewsfeed-deploy" 2>/dev/null || true
+    pkill -f "holochain.*eko-deploy" 2>/dev/null || true
     sleep 1
 
     for i in $(seq 1 "$NUM_CONDUCTORS"); do
@@ -402,8 +402,8 @@ start_conductor_instance() {
     rm -rf "$DATA_DIR" "$LOG_FILE" 2>/dev/null || true
     mkdir -p "$DATA_DIR"
 
-    local INSTANCE_APP_ID="mewsfeed"
-    [ "$INDEX" -gt 1 ] && INSTANCE_APP_ID="mewsfeed_${INDEX}"
+    local INSTANCE_APP_ID="eko"
+    [ "$INDEX" -gt 1 ] && INSTANCE_APP_ID="eko_${INDEX}"
 
     (echo "test-passphrase" | \
         RUST_LOG="info,holochain=debug,kitsune2=debug" \
@@ -763,7 +763,7 @@ cmd_stop_local() {
             rm -f "$pid_file"
         fi
     done
-    pkill -f "holochain.*mewsfeed-deploy" 2>/dev/null || true
+    pkill -f "holochain.*eko-deploy" 2>/dev/null || true
     pkill -f "hc sandbox" 2>/dev/null || true
 
     log_info "All local services stopped"
@@ -775,7 +775,7 @@ cmd_stop_local() {
 
 cmd_status() {
     echo ""
-    echo "=== Mewsfeed Deployment Status ==="
+    echo "=== Eko Deployment Status ==="
     echo ""
 
     # Conductors
@@ -857,7 +857,7 @@ if [ -z "$COMMAND" ]; then
     echo ""
     echo "Commands:"
     echo "  setup           One-time Cloudflare setup (KV namespace, Pages project)"
-    echo "  build           Build mewsfeed UI with joining service URL"
+    echo "  build           Build eko UI with joining service URL"
     echo "  deploy-cloud    Deploy worker + pages to Cloudflare"
     echo "  start-local     Start conductors, linker, tunnel, seed KV"
     echo "  stop-local      Stop all local services"

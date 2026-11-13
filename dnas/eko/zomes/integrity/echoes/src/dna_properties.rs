@@ -1,0 +1,13 @@
+use hdi::prelude::*;
+
+#[derive(Debug, Serialize, Deserialize, SerializedBytes, Clone)]
+pub struct DnaProperties {
+    pub echo_characters_min: Option<usize>,
+    pub echo_characters_max: Option<usize>,
+}
+
+#[hdk_extern]
+pub fn get_dna_properties(_: ()) -> ExternResult<DnaProperties> {
+    DnaProperties::try_from(dna_info()?.modifiers.properties)
+        .map_err(|e| wasm_error!(WasmErrorInner::Guest(e.into())))
+}

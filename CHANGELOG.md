@@ -26,19 +26,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - refactor: manage dialogs via stores, reduce duplicate components (#232)
 - fix: ensure notifications count only grows over time (#231)
 - fix: reactivity of profile popup data (#230)
-- fix: show create profile form upon clicking 'pin mew' button without a profile (#228)
+- fix: show create profile form upon clicking 'pin echo' button without a profile (#228)
 - fix: avoid excessive "profile not found" errors (#225)
 - build: replace new-port-cli with fork avoiding rust clap validation issue (#224)
-- feat: only notify agent of responses to mews they responded to if those responses are created after their own (#221)
-- feat: avoid duplicate notifications for both 'responded to your mew' and 'responded to a mew you responded to' when agent both created the mew & responded to it (#221)
+- feat: only notify agent of responses to echoes they responded to if those responses are created after their own (#221)
+- feat: avoid duplicate notifications for both 'responded to your echo' and 'responded to an echo you responded to' when agent both created the echo & responded to it (#221)
 - fix: infinite scroll of followers / creators lists (#220)
-- feat: display confirmation dialog before creating a mewmew (#219)
+- feat: display confirmation dialog before creating a reecho (#219)
 - feat: focus on input fields upon opening dialogs (#216)
 - fix: reduce noise of toast errors from failed zome calls when fetching data, only display toast errors when active user actions fail (#204)
 - fix: remove typo dot (#203)
 - feat: add tooltips to site menu (#202)
 - chore: delete unused signals code (#201, #200)
-- fix: reactively update pinned mews & authored mews upon mew deletion (#199)
+- fix: reactively update pinned echoes & authored echoes upon echo deletion (#199)
 - style: add padding around agent profiles in followers / creators lists (#198)
 - fix: use count_links for followers /creators counts (#197)
 - style: wrap toast message text, shrink font size, increase display time (#196)
@@ -56,21 +56,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - feat: front-end UI redesign (#128, #154)
 - refactor: rewrite DNAs following patterns of scaffolder (#124)
 - feat: improve styling of quotes (#134)
-- feat: pin mews to your profile page (#133)
+- feat: pin echoes to your profile page (#133)
 - feat: pagination + infinite scroll of all lists (#146)
 - feat: explore page to discover creators and tags
 - feat: notifications page to see all interactions with an agent's content (#141)
 - feat: use local storage cache, polling, and SWRV pattern for fetching data (#144, #133)
 - feat: support pagination + infinite scroll of lists (#146)
-- feat: soft-delete mews (#129)
-- feat: optionally set a strict min + max mew length via DNA properties (#116)
+- feat: soft-delete echoes (#129)
+- feat: optionally set a strict min + max echo length via DNA properties (#116)
 - feat: link to mentions on profile page (#110)
-- feat: link to parent mew in response mews (#107)
+- feat: link to parent echo in response echoes (#107)
 - feat: allow app use without profile, prompt to create profile upon first action (#61)
-- feat: improve rendering of mew content and input field (#57)
+- feat: improve rendering of echo content and input field (#57)
 - refactor: link input UX (#106)
 - infrastructure: improvements to deployment, ci infrastructure (#156, #119, #118, #103)
-- chore: rename app from 'clutter' to 'mewsfeed' (#115)
+- chore: rename app from 'clutter' to 'eko' (#115)
 ### Fixed
 - fix: minor quirks & codebase cleanup (#148, #143, #164)
 ### Removed
@@ -78,24 +78,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## 2023-02-26 v0.9.0-alpha
 ### Added
-- Support multi-word link text in mews with the syntax `^[my link]`
+- Support multi-word link text in echoes with the syntax `^[my link]`
 - Human-readable timestamps
 - Search for hashtags, cashtags
-- Display URL in tooltip when hovering over mew links
-- URL hyperlinks in mews.
+- Display URL in tooltip when hovering over echo links
+- URL hyperlinks in echoes.
 ### Changed
 - **BREAKING CHANGE**: Upgrade to Holochain v0.1.3
 
 ## 2022-12-25 v0.8.0-alpha
 ### Added
-- Thread view for a mew with all its replies.
+- Thread view for an echo with all its replies.
 ### Changed
 - Upgrade to Holochain 0.0.175
 
 ## 2022-11-10 v0.7.0-alpha
 
 ### Added
-- **BREAKING CHANGE**: Add links vector to mew content, which holds agent keys of user mentions in mews.
+- **BREAKING CHANGE**: Add links vector to echo content, which holds agent keys of user mentions in echoes.
 - Add sections "Followed by" and "Following" to agent profile view.
 
 ### Changed
@@ -130,9 +130,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **BREAKING**: upgrade Holochain to 145 & split into integrity & coordinator zomes
 - **BREAKING**: convert b64 hashes to byte hashes in zome and test
 - handle agent pub keys on the UI
-- all links use header hashes now instead of entry hashes (licking, replying, mewmewing etc. as well as tagging) [\#31](https://github.com/geekgene/mewsfeed/pull/31)
-- upgrade to Tryorama 0.5.0 [\#31](https://github.com/geekgene/mewsfeed/pull/31)
-- break up the one huge test into isolated test cases [\#31](https://github.com/geekgene/mewsfeed/pull/31)
+- all links use header hashes now instead of entry hashes (likeing, replying, reechoing etc. as well as tagging) [\#31](https://github.com/geekgene/eko/pull/31)
+- upgrade to Tryorama 0.5.0 [\#31](https://github.com/geekgene/eko/pull/31)
+- break up the one huge test into isolated test cases [\#31](https://github.com/geekgene/eko/pull/31)
 - update profiles ui
 - upgrade profiles & open-dev packages
 - differentiate link types

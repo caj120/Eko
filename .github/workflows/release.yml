@@ -63,15 +63,15 @@ jobs:
       - name: Compute checksums
         run: |
           cd workdir
-          shasum -a 256 mewsfeed.happ mewsfeed.webhapp > checksums.txt
+          shasum -a 256 eko.happ eko.webhapp > checksums.txt
           cat checksums.txt
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            workdir/mewsfeed.happ
-            workdir/mewsfeed.webhapp
+            workdir/eko.happ
+            workdir/eko.webhapp
             workdir/checksums.txt
           generate_release_notes: true
         env:

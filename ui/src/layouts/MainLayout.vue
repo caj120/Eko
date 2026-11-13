@@ -34,20 +34,20 @@
             backdrop-filter: blur(10px);
           "
         >
-          <CreateMewInput
-            :mew-type="MewTypeName.Original"
-            @mew-created="onCreateMew"
+          <CreateEchoInput
+            :echo-type="EchoTypeName.Original"
+            @echo-created="onCreateEcho"
           />
         </div>
         <div v-else class="flex-1 w-full flex justify-end">
           <button
             class="z-10 btn btn-md btn-neutral rounded-full py-3 flex justify-start items-center"
             @click="
-              openCreateMewDialog(MewTypeName.Original, undefined, onCreateMew)
+              openCreateEchoDialog(EchoTypeName.Original, undefined, onCreateEcho)
             "
           >
             <IconAdd class="w-6 h-6" />
-            <div>Mew</div>
+            <div>Echo</div>
           </button>
         </div>
       </div>
@@ -56,10 +56,10 @@
 
   <button
     class="block sm:hidden z-10 fixed bottom-32 right-3 btn btn-md btn-neutral rounded-full py-3 flex justify-start items-center"
-    @click="openCreateMewDialog(MewTypeName.Original, undefined, onCreateMew)"
+    @click="openCreateEchoDialog(EchoTypeName.Original, undefined, onCreateEcho)"
   >
     <IconAdd class="w-6 h-6" />
-    <div>Mew</div>
+    <div>Echo</div>
   </button>
 
   <div
@@ -75,11 +75,11 @@
 
   <SearchEverythingDialog v-model="showSearchDialog" />
 
-  <CreateMewDialog
-    v-model="showCreateMewDialog"
-    :mew-type="createMewDialogType"
-    v-bind="createMewDialogProps"
-    @mew-created="createMewCompleteCallback"
+  <CreateEchoDialog
+    v-model="showCreateEchoDialog"
+    :echo-type="createEchoDialogType"
+    v-bind="createEchoDialogProps"
+    @echo-created="createEchoCompleteCallback"
   />
 
   <CreateProfileIfNotFoundDialog
@@ -113,11 +113,11 @@
 </template>
 
 <script setup lang="ts">
-import CreateMewInput from "@/components/CreateMewInput.vue";
+import CreateEchoInput from "@/components/CreateEchoInput.vue";
 import BaseSiteMenu from "@/components/BaseSiteMenu.vue";
 import SearchEverythingDialog from "@/components/SearchEverythingDialog.vue";
 import { ROUTES } from "@/router";
-import { FeedMew, MewTypeName } from "@/types/types";
+import { FeedEcho, EchoTypeName } from "@/types/types";
 import { AppClient, encodeHashToBase64 } from "@holochain/client";
 import { ComputedRef, computed, inject, ref, watch } from "vue";
 import { useCellsReady } from "@/composables/useCellsReady";
@@ -128,8 +128,8 @@ import { useInfiniteQuery, useQuery } from "@tanstack/vue-query";
 import { wrapInput } from "@/utils/zomeCall";
 import IconAdd from "~icons/ion/add";
 import ToastNotices from "@/components/ToastNotices.vue";
-import { useCreateMewDialogStore } from "@/stores/createMewDialog";
-import CreateMewDialog from "@/components/CreateMewDialog.vue";
+import { useCreateEchoDialogStore } from "@/stores/createEchoDialog";
+import CreateEchoDialog from "@/components/CreateEchoDialog.vue";
 import CreateProfileIfNotFoundDialog from "@/components/CreateProfileIfNotFoundDialog.vue";
 import BaseConfirmDialog from "@/components/BaseConfirmDialog.vue";
 import { useCreateProfileDialogStore } from "../stores/createProfileDialog";
@@ -144,13 +144,13 @@ const router = useRouter();
 const route = useRoute();
 const useNotificationsReadStore = makeUseNotificationsReadStore(client);
 const { setNotificationsCount } = useNotificationsReadStore();
-const { openCreateMewDialog, closeCreateMewDialog } = useCreateMewDialogStore();
+const { openCreateEchoDialog, closeCreateEchoDialog } = useCreateEchoDialogStore();
 const {
-  createMewDialogType,
-  createMewDialogProps,
-  showCreateMewDialog,
-  createMewCompleteCallback,
-} = storeToRefs(useCreateMewDialogStore());
+  createEchoDialogType,
+  createEchoDialogProps,
+  showCreateEchoDialog,
+  createEchoCompleteCallback,
+} = storeToRefs(useCreateEchoDialogStore());
 const { createProfileCompleteCallback, showCreateProfileDialog } = storeToRefs(
   useCreateProfileDialogStore()
 );
@@ -168,8 +168,8 @@ const showSearchDialog = ref(false);
 const forceReloadRouterViewKey = ref(0);
 const myPubKeyB64 = computed(() => encodeHashToBase64(client.myPubKey));
 
-const onCreateMew = () => {
-  closeCreateMewDialog();
+const onCreateEcho = () => {
+  closeCreateEchoDialog();
   setHomeRedirect(false);
 
   if (
@@ -183,11 +183,11 @@ const onCreateMew = () => {
   }
 };
 
-const fetchMostRecentMew = (): Promise<FeedMew[]> =>
+const fetchMostRecentEcho = (): Promise<FeedEcho[]> =>
   client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
-    fn_name: "get_followed_creators_mews_with_context",
+    role_name: "eko",
+    zome_name: "echoes",
+    fn_name: "get_followed_creators_echoes_with_context",
     payload: wrapInput({
       agent: client.myPubKey,
       page: {
@@ -196,18 +196,18 @@ const fetchMostRecentMew = (): Promise<FeedMew[]> =>
     }),
   });
 
-const { data: mostRecentMew } = useQuery({
+const { data: mostRecentEcho } = useQuery({
   queryKey: [
-    "mews",
-    "get_followed_creators_mews_with_context",
+    "echoes",
+    "get_followed_creators_echoes_with_context",
     myPubKeyB64,
     { page: { limit: 1 } },
   ],
-  queryFn: fetchMostRecentMew,
+  queryFn: fetchMostRecentEcho,
   enabled: cellsReady,
 });
 
-watch(mostRecentMew, (val) => {
+watch(mostRecentEcho, (val) => {
   if (val && val.length > 0) {
     setHomeRedirect(false);
   }
@@ -215,8 +215,8 @@ watch(mostRecentMew, (val) => {
 
 const fetchNotifications = async () => {
   const count: number = await client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
+    role_name: "eko",
+    zome_name: "echoes",
     fn_name: "count_notifications_for_agent",
     payload: wrapInput(client.myPubKey),
   });
@@ -225,7 +225,7 @@ const fetchNotifications = async () => {
 };
 
 useInfiniteQuery({
-  queryKey: ["mews", "count_notifications_for_agent", myPubKeyB64],
+  queryKey: ["echoes", "count_notifications_for_agent", myPubKeyB64],
   queryFn: fetchNotifications,
   refetchInterval: 1000 * 30, // 30 seconds
   refetchIntervalInBackground: true,

@@ -16,21 +16,21 @@
               once: true,
             }"
             :notification="notification"
-            @mew-deleted="patchNotificationMew"
-            @mew-licked="patchNotificationMew"
-            @mew-pinned="patchNotificationMew"
-            @mew-unlicked="patchNotificationMew"
-            @mew-unpinned="patchNotificationMew"
-            @mewmew-created="patchNotificationMew"
-            @quote-created="patchNotificationMew"
-            @reply-created="patchNotificationMew"
+            @echo-deleted="patchNotificationEcho"
+            @echo-likeed="patchNotificationEcho"
+            @echo-pinned="patchNotificationEcho"
+            @echo-unlikeed="patchNotificationEcho"
+            @echo-unpinned="patchNotificationEcho"
+            @reecho-created="patchNotificationEcho"
+            @quote-created="patchNotificationEcho"
+            @reply-created="patchNotificationEcho"
           />
           <hr v-if="j !== page.length - 1" class="border-base-300" />
         </template>
       </template>
     </BaseInfiniteScroll>
     <BaseListSkeleton v-else-if="isInitialLoading" :count="4">
-      <BaseMewListItemSkeleton />
+      <BaseEchoListItemSkeleton />
     </BaseListSkeleton>
     <BaseEmptyList v-else />
   </div>
@@ -46,9 +46,9 @@ import BaseNotification from "@/components/BaseNotification.vue";
 import BaseEmptyList from "@/components/BaseEmptyList.vue";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/vue-query";
 import { makeUseNotificationsReadStore } from "@/stores/notificationsRead";
-import { FeedMew, PaginationDirectionName, Notification } from "@/types/types";
+import { FeedEcho, PaginationDirectionName, Notification } from "@/types/types";
 import BaseListSkeleton from "@/components/BaseListSkeleton.vue";
-import BaseMewListItemSkeleton from "@/components/BaseMewListItemSkeleton.vue";
+import BaseEchoListItemSkeleton from "@/components/BaseEchoListItemSkeleton.vue";
 import BaseInfiniteScroll from "@/components/BaseInfiniteScroll.vue";
 import { wrapInput } from "@/utils/zomeCall";
 
@@ -63,8 +63,8 @@ const pageLimit = 10;
 
 const fetchNotifications = async (params: any) => {
   const res: Notification[] = await client.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
+    role_name: "eko",
+    zome_name: "echoes",
     fn_name: "get_notifications_for_agent",
     payload: wrapInput({
       agent: client.myPubKey,
@@ -79,18 +79,18 @@ const fetchNotifications = async (params: any) => {
   return res;
 };
 
-const notificationsQueryKey = ["mews", "get_notifications_for_agent", myPubKeyB64];
+const notificationsQueryKey = ["echoes", "get_notifications_for_agent", myPubKeyB64];
 
-const patchNotificationMew = (updatedMew: FeedMew) => {
-  const targetHash = encodeHashToBase64(updatedMew.action_hash);
+const patchNotificationEcho = (updatedEcho: FeedEcho) => {
+  const targetHash = encodeHashToBase64(updatedEcho.action_hash);
   queryClient.setQueryData(notificationsQueryKey, (old: any) => {
     if (!old?.pages) return old;
     return {
       ...old,
       pages: old.pages.map((page: Notification[]) =>
         page.map((n) =>
-          n.feed_mew && encodeHashToBase64(n.feed_mew.action_hash) === targetHash
-            ? { ...n, feed_mew: updatedMew }
+          n.feed_echo && encodeHashToBase64(n.feed_echo.action_hash) === targetHash
+            ? { ...n, feed_echo: updatedEcho }
             : n
         )
       ),

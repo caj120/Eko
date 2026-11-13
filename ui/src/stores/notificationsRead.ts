@@ -13,8 +13,8 @@ const notificationToKey = (notification: Notification) => {
     notificationType: notification.notification_type,
     timestamp: notification.timestamp,
     agentPubKeyB64: notification.agent,
-    mewActionHash: notification.feed_mew
-      ? notification.feed_mew.action_hash
+    echoActionHash: notification.feed_echo
+      ? notification.feed_echo.action_hash
       : null,
   };
 

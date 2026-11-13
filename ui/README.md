@@ -1,4 +1,4 @@
-# A UI for mewsfeed based on Vue
+# A UI for eko based on Vue
 
 ## Run dev server
 ```sh

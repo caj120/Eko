@@ -1,7 +1,7 @@
 ---
 manifest_version: "0"
-name: mewsfeed
+name: eko
 ui:
   path: "../ui/dist.zip"
 happ:
-  path: "./mewsfeed.happ"
+  path: "./eko.happ"

@@ -1,5 +1,5 @@
 /**
- * Cloudflare Worker entry point for the mewsfeed joining service.
+ * Cloudflare Worker entry point for the eko joining service.
  *
  * Based on joining-service/deploy/cloudflare/worker-entry.ts with
  * the KvUrlProvider wired up for linker URL resolution from KV.

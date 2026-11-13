@@ -5,8 +5,8 @@
     class="h-screen w-full flex flex-col"
   >
     <header class="flex items-center gap-3 px-6 py-4 border-b border-base-300">
-      <img src="/mewsfeed_logo.png" alt="mewsfeed logo" class="w-8 h-8 -scale-x-100" />
-      <h1 class="text-lg font-title">Welcome to Mewsfeed: Initialization</h1>
+      <img src="/eko_logo.png" alt="eko logo" class="w-8 h-8 -scale-x-100" />
+      <h1 class="text-lg font-title">Welcome to Eko: Initialization</h1>
     </header>
 
     <div class="flex-1 flex flex-col justify-center items-center space-y-4 p-8">
@@ -62,7 +62,7 @@ import {
 } from "@holochain-open-dev/profiles";
 import { AppClient, AppInfo, encodeHashToBase64 } from "@holochain/client";
 import { decode } from "@msgpack/msgpack";
-import { MewsfeedDnaProperties } from "./types/types";
+import { EkoDnaProperties } from "./types/types";
 import asyncRetry from "async-retry";
 import { CellType } from "@holochain/client";
 import { setHomeRedirect } from "@/utils/homeRedirect";
@@ -85,9 +85,9 @@ const queryClient = useQueryClient();
 
 const dnaProperties = computed(() => {
   if (!appInfo.value) return {};
-  const cellInfo = appInfo.value.cell_info.mewsfeed[0];
+  const cellInfo = appInfo.value.cell_info.eko[0];
   if (cellInfo.type !== CellType.Provisioned) return {};
-  return decode(cellInfo.value.dna_modifiers.properties) as MewsfeedDnaProperties;
+  return decode(cellInfo.value.dna_modifiers.properties) as EkoDnaProperties;
 });
 
 onMounted(() => {
@@ -129,8 +129,8 @@ const setupApp = async () => {
   // immediately fires network calls (get_agent_profile) on subscription,
   // which would race ahead of ping and block the worker if cells aren't ready.
   await client.value.callZome({
-    role_name: "mewsfeed",
-    zome_name: "mews",
+    role_name: "eko",
+    zome_name: "echoes",
     fn_name: "ping",
     payload: null,
   });
@@ -142,14 +142,14 @@ const setupApp = async () => {
   const profilesClient = IS_HWC
     ? new ZeroArcProfilesClient(
         toRaw(client.value) as any,
-        "mewsfeed",
+        "eko",
         "profiles"
       )
     : new ProfilesClient(
         // eslint-disable-next-line
         // @ts-ignore
         toRaw(client.value),
-        "mewsfeed",
+        "eko",
         "profiles"
       );
   profilesStore.value = new ProfilesStore(profilesClient, PROFILES_CONFIG);

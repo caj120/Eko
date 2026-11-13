@@ -1,5 +1,5 @@
 /**
- * HWC integration module for mewsfeed
+ * HWC integration module for eko
  *
  * Re-exports from @holo-host/web-conductor-client package for compatibility.
  * Also provides ZeroArcProfilesClient for zero-arc nodes that need to always

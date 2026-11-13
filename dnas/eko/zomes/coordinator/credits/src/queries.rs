@@ -11,10 +11,7 @@ fn credit_hashes_at(
     link_type: LinkTypes,
     strategy: GetStrategy,
 ) -> ExternResult<Vec<ActionHash>> {
-    let mut links = get_links(
-        LinkQuery::new(base, link_type.try_into_filter()?),
-        strategy,
-    )?;
+    let mut links = get_links(LinkQuery::new(base, link_type.try_into_filter()?), strategy)?;
     links.sort_by_key(|link| link.timestamp);
 
     Ok(links

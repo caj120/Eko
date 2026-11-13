@@ -14,9 +14,7 @@ pub fn must_get_charter(charter_hash: &ActionHash) -> ExternResult<Charter> {
 }
 
 /// Load an Admission from an action hash, with its author.
-pub fn must_get_admission(
-    admission_hash: &ActionHash,
-) -> ExternResult<(Admission, AgentPubKey)> {
+pub fn must_get_admission(admission_hash: &ActionHash) -> ExternResult<(Admission, AgentPubKey)> {
     let record = must_get_valid_record(admission_hash.clone())?;
     let author = record.action().author().clone();
     let admission: Admission = record

@@ -133,9 +133,7 @@ pub struct MembershipQuery {
 
 /// Does this agent belong to this state, and by whose sponsorship?
 #[hdk_extern]
-pub fn get_membership(
-    input: ZomeFnInput<MembershipQuery>,
-) -> ExternResult<Option<MemberRecord>> {
+pub fn get_membership(input: ZomeFnInput<MembershipQuery>) -> ExternResult<Option<MemberRecord>> {
     let strategy = input.get_strategy();
     let hashes = targets_at(
         input.input.agent.clone().into(),
@@ -154,9 +152,7 @@ pub fn get_membership(
 /// admission. This is the thing a peer can check: every link in the chain is
 /// an entry somebody signed.
 #[hdk_extern]
-pub fn get_sponsorship_chain(
-    input: ZomeFnInput<ActionHash>,
-) -> ExternResult<Vec<MemberRecord>> {
+pub fn get_sponsorship_chain(input: ZomeFnInput<ActionHash>) -> ExternResult<Vec<MemberRecord>> {
     let strategy = input.get_strategy();
     let mut chain: Vec<MemberRecord> = Vec::new();
     let mut next = Some(input.input.clone());

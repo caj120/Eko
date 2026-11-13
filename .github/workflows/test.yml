@@ -8,6 +8,7 @@ on:
       - "main"
       - "main-0.4"
       - "main-0.6"
+      - "eko"
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -18,7 +19,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        # Ubuntu only while the new zomes are being brought to a first
+        # successful build: macOS roughly doubles wall time per run and adds
+        # nothing to a compile-error loop. Restore macos-latest before release.
+        os: [ubuntu-latest]
       fail-fast: false
 
     steps:

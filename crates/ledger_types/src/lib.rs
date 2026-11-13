@@ -86,7 +86,9 @@ impl CreditLineBasis {
                 crediters,
                 per_crediter,
                 ceiling,
-            } => (*crediters as u64).saturating_mul(*per_crediter).min(*ceiling),
+            } => (*crediters as u64)
+                .saturating_mul(*per_crediter)
+                .min(*ceiling),
             CreditLineBasis::Granted { .. } => 0,
         }
     }

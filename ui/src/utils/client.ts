@@ -71,14 +71,22 @@ export const setupHolochain = async (opts?: SetupHolochainOptions) => {
 
 // authenticate app websocket and set up zome call signing when run outside of launcher
 const createClient = async () => {
-  const adminWs = await AdminWebsocket.connect({
-    url: new URL(`ws://localhost:${import.meta.env.VITE_HC_ADMIN_PORT}`),
-  });
+  // Remote dev (Codespace): go through the dev server's websocket proxy.
+  const proxied = import.meta.env.VITE_HC_PROXY;
+  const wsBase = `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}`;
+  const adminUrl = proxied
+    ? `${wsBase}/hc-admin`
+    : `ws://localhost:${import.meta.env.VITE_HC_ADMIN_PORT}`;
+  const appUrl = proxied
+    ? `${wsBase}/hc-app`
+    : `ws://localhost:${import.meta.env.VITE_HC_PORT}`;
+
+  const adminWs = await AdminWebsocket.connect({ url: new URL(adminUrl) });
   const issued = await adminWs.issueAppAuthenticationToken({
     installed_app_id: HOLOCHAIN_APP_ID,
   });
   const client = await AppWebsocket.connect({
-    url: new URL(`ws://localhost:${import.meta.env.VITE_HC_PORT}`),
+    url: new URL(appUrl),
     token: issued.token,
     defaultTimeout: 60000,
   });

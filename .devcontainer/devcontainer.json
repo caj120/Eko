@@ -1,0 +1,16 @@
+{
+  "name": "eko",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/nix:1": {
+      "extraNixConfig": "experimental-features = nix-command flakes\nextra-substituters = https://holochain-ci.cachix.org\nextra-trusted-public-keys = holochain-ci.cachix.org-1:5IUSkZc0aoRS53rfkvH9Kid40NpyjwCMCzwRHXBEYTo="
+    }
+  },
+  "hostRequirements": { "cpus": 4 },
+  "forwardPorts": [1420, 1421],
+  "portsAttributes": {
+    "1420": { "label": "Eko agent 1" },
+    "1421": { "label": "Eko agent 2" }
+  },
+  "postCreateCommand": "nix develop -c npm ci"
+}

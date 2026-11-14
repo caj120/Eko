@@ -10,9 +10,30 @@ import Components from "unplugin-vue-components/vite";
 import Icons from "unplugin-icons/vite";
 import IconsResolver from "unplugin-icons/resolver";
 
+// When the UI is served from a remote machine (e.g. a Codespace), the browser
+// cannot reach the conductor on "localhost". Proxy both websockets through the
+// dev server and present an origin the conductor allows.
+const conductorProxy = process.env.VITE_HC_PROXY
+  ? {
+      "/hc-admin": {
+        target: `ws://127.0.0.1:${process.env.HC_ADMIN_PORT}`,
+        ws: true,
+        rewrite: (p: string) => p.replace(/^\/hc-admin/, ""),
+        headers: { origin: "http://localhost:1420" },
+      },
+      "/hc-app": {
+        target: `ws://127.0.0.1:${process.env.HC_APP_PORT}`,
+        ws: true,
+        rewrite: (p: string) => p.replace(/^\/hc-app/, ""),
+        headers: { origin: "http://localhost:1420" },
+      },
+    }
+  : undefined;
+
 export default defineConfig({
   server: {
     port: 1420,
+    proxy: conductorProxy,
     strictPort: true,
     host: process.env.TAURI_DEV_HOST || false,
     hmr: process.env.TAURI_DEV_HOST

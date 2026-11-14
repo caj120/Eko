@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-base-200/75 rounded-2xl p-4">
+  <div class="bg-base-200/60 border-l-4 border-primary rounded-r-2xl p-4">
     <div class="flex justify-between items-start">
       <div class="flex items-center space-x-2 min-w-0">
         <BaseAgentProfileLinkAvatar :agent-pub-key="credit.author" />
@@ -17,7 +17,9 @@
       </div>
     </div>
 
-    <p class="mt-3 break-words">{{ credit.credit.contribution }}</p>
+    <p class="mt-3 break-words font-serif text-base leading-relaxed">
+      “{{ credit.credit.contribution }}”
+    </p>
 
     <div class="mt-3 flex justify-between items-center text-xs">
       <div class="flex items-center space-x-2">

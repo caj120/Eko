@@ -2,7 +2,7 @@
   <section class="my-8 px-4">
     <div class="flex justify-between items-center mb-4">
       <div>
-        <h2 class="text-2xl font-title font-bold tracking-tighter">credits</h2>
+        <h2 class="text-2xl font-title tracking-tight">Track record</h2>
         <div class="text-xs opacity-70 font-mono">
           {{ distinctCount ?? 0 }} distinct
           {{ distinctCount === 1 ? "person" : "people" }} credited this agent

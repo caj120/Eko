@@ -1,6 +1,6 @@
 <template>
   <div class="w-full relative">
-    <div class="w-full text-content text-left break-words">
+    <div class="w-full text-content font-serif text-base leading-relaxed text-left break-words">
       <template v-for="(contentPart, index) of partsDisplayed" :key="index">
         <BaseEchoContentTag
           v-if="contentPart.tagType !== undefined"

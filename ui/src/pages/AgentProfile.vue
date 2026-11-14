@@ -40,6 +40,8 @@
       />
     </template>
 
+    <CreditsSection v-if="agentPubKey" :agent-pub-key="agentPubKey" />
+
     <!-- Pinned echoes: loads independently with skeleton -->
     <BaseList
       class="my-8 px-4"
@@ -132,6 +134,7 @@ import BaseEchoListItemSkeleton from "@/components/BaseEchoListItemSkeleton.vue"
 import EditAgentProfileDialog from "@/components/EditAgentProfileDialog.vue";
 import FollowersListDialog from "@/components/FollowersListDialog.vue";
 import CreatorsListDialog from "@/components/CreatorsListDialog.vue";
+import CreditsSection from "@/components/CreditsSection.vue";
 import { wrapInput } from "@/utils/zomeCall";
 import { usePatchFeedEcho } from "@/composables/usePatchFeedEcho";
 import { FeedEcho } from "@/types/types";

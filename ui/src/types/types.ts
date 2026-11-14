@@ -232,3 +232,30 @@ export type ToastMessage = {
   type: ToastMessageType;
   text: string;
 };
+
+// Human Credit: a signed acknowledgment of someone's contribution.
+export type CreditRef = {
+  collection: string;
+  token_id: string;
+  chain: string | null;
+};
+
+export type HumanCredit = {
+  recipient: AgentPubKey;
+  contribution: string;
+  credit_ref: CreditRef | null;
+  attached_to: ActionHash | null;
+};
+
+export type CreditWithContext = {
+  credit: HumanCredit;
+  action: Create;
+  action_hash: ActionHash;
+  author: AgentPubKey;
+  timestamp: number;
+  deleted_timestamp: number | null;
+};
+
+// Mirrors the credit_characters_* DNA properties.
+export const CREDIT_MIN_CHARS = 10;
+export const CREDIT_MAX_CHARS = 280;

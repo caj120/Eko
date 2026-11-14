@@ -263,6 +263,19 @@
                   {{ feedEcho.likes_count }}
                 </div>
               </button>
+
+              <button
+                v-if="!isAuthoredByMe && !isDeleted"
+                v-tooltip.bottom="{
+                  content: 'Give credit to the author',
+                  popperClass: 'text-xs',
+                  triggers: ['hover'],
+                }"
+                class="flex justify-start items-center space-x-1 p-2 text-base-300 hover:text-primary"
+                @click.stop.prevent="openCredit"
+              >
+                <IconHandHeart class="w-4 h-4" />
+              </button>
             </div>
             <div class="flex justify-start items-center space-x-2">
               <button
@@ -327,6 +340,12 @@
         </div>
       </div>
     </div>
+    <CreditDialog
+      v-model="showCreditDialog"
+      :recipient="feedEcho.action.author"
+      :attached-to="feedEcho.action_hash"
+      @click.stop
+    />
   </div>
 </template>
 
@@ -353,6 +372,8 @@ import IconTrashSharp from "~icons/ion/trash-sharp";
 import IconSharpPinOff from "~icons/ic/sharp-pin-off";
 import IconSharpPushPin from "~icons/ic/sharp-push-pin";
 import BaseIconTongue from "@/components/BaseIconTongue.vue";
+import IconHandHeart from "~icons/mdi/hand-heart-outline";
+import CreditDialog from "@/components/CreditDialog.vue";
 import BaseAgentProfileName from "@/components/BaseAgentProfileName.vue";
 import { useToasts } from "@/stores/toasts";
 import { useCreateEchoDialogStore } from "@/stores/createEchoDialog";
@@ -397,6 +418,15 @@ const { openConfirmDialog } = useConfirmDialogStore();
 const showIfDeleted = ref(props.showIfDeletedDefault);
 const isUpdatingPin = ref(false);
 const isUpdatingLike = ref(false);
+const showCreditDialog = ref(false);
+
+const openCredit = () => {
+  if (!myProfile.value) {
+    openCreateProfileDialog(openCredit);
+    return;
+  }
+  showCreditDialog.value = true;
+};
 
 const isReecho = computed(
   () =>

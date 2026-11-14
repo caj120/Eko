@@ -62,6 +62,9 @@ jobs:
       - name: Check rust formatting
         run: nix develop -c $SHELL -c "cargo fmt --check"
 
+      - name: Typecheck UI
+        run: nix develop -c $SHELL -c "cd ui && npx vue-tsc --noEmit"
+
       - name: Build Happ
         run: nix develop -c $SHELL -c "npm run build:happ"
 

@@ -27,22 +27,6 @@
         {{ contribution.trim().length }} / {{ CREDIT_MAX_CHARS }}
       </div>
 
-      <details class="mt-2">
-        <summary class="text-sm cursor-pointer">
-          Reference a Credits NFT (optional)
-        </summary>
-        <div class="flex space-x-2 mt-2">
-          <input
-            v-model="tokenId"
-            class="input input-bordered input-sm flex-1"
-            placeholder="Token number, e.g. 77449"
-          />
-        </div>
-        <p class="text-xs opacity-60 mt-1">
-          This is a claim you are making. Eko cannot verify it, and others
-          will see it as your claim.
-        </p>
-      </details>
 
       <p class="text-xs opacity-60 mt-4">
         A credit is signed by you and cannot be edited by them. Only you can
@@ -86,7 +70,6 @@ const themeStore = useThemeStore();
 const { showMessage, showError } = useToasts();
 
 const contribution = ref("");
-const tokenId = ref("");
 const saving = ref(false);
 
 const canSubmit = computed(() => {
@@ -99,7 +82,6 @@ watch(
   (open) => {
     if (open) {
       contribution.value = "";
-      tokenId.value = "";
     }
   }
 );
@@ -107,7 +89,6 @@ watch(
 const submit = async () => {
   saving.value = true;
   try {
-    const token = tokenId.value.trim();
     await client.callZome({
       role_name: "eko",
       zome_name: "credits",
@@ -115,9 +96,7 @@ const submit = async () => {
       payload: {
         recipient: props.recipient,
         contribution: contribution.value.trim(),
-        credit_ref: token
-          ? { collection: "credits", token_id: token, chain: null }
-          : null,
+        credit_ref: null,
         attached_to: props.attachedTo ?? null,
       },
     });

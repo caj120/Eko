@@ -21,16 +21,6 @@
 
     <div class="mt-3 flex justify-between items-center text-xs">
       <div class="flex items-center space-x-2">
-        <span
-          v-if="credit.credit.credit_ref"
-          class="badge badge-outline"
-          title="Unverified claim by the author"
-        >
-          {{ credit.credit.credit_ref.collection }} #{{
-            credit.credit.credit_ref.token_id
-          }}
-          (claimed)
-        </span>
         <RouterLink
           v-if="credit.credit.attached_to"
           class="link"

@@ -97,12 +97,14 @@
             :profile="profile"
             :agentPubKey="agentPubKey"
           />
-          <ButtonFollow
-            v-if="!isMyProfile"
-            :agentPubKey="agentPubKey"
-            :big="bigFollowButton"
-            @toggle-follow="(val) => emit('toggle-follow', val)"
-          />
+          <div v-if="!isMyProfile" class="flex items-center space-x-2">
+            <ButtonMessage :agentPubKey="agentPubKey" :big="bigFollowButton" />
+            <ButtonFollow
+              :agentPubKey="agentPubKey"
+              :big="bigFollowButton"
+              @toggle-follow="(val) => emit('toggle-follow', val)"
+            />
+          </div>
           <div v-else-if="!hideEditButton" class="flex flex-col space-y-2">
             <button
               class="btn btn-xs sm:btn-md px-4 btn-outline rounded-3xl flex justify-center items-center space-x-2"
@@ -190,6 +192,7 @@ import { AgentPubKey, AppClient, encodeHashToBase64 } from "@holochain/client";
 import { computed, ComputedRef, inject, ref } from "vue";
 import BaseAgentAvatar from "@/components/BaseAgentAvatar.vue";
 import ButtonFollow from "@/components/ButtonFollow.vue";
+import ButtonMessage from "@/components/ButtonMessage.vue";
 import { Profile } from "@holochain-open-dev/profiles";
 import BaseAgentProfileNameLarge from "@/components/BaseAgentProfileNameLarge.vue";
 import { PROFILE_FIELDS } from "@/types/types";

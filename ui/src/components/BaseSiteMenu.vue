@@ -26,6 +26,19 @@
     >
       <IconGlobeOutline class="w-6 h-6" />
     </RouterLink>
+    <RouterLink
+      v-tooltip.left="{
+        content: 'Messages',
+        popperClass: 'text-xs',
+        triggers: ['hover'],
+      }"
+      class="btn btn-circle btn-md"
+      active-class="btn-neutral"
+      alt="Messages Page"
+      :to="{ name: ROUTES.messages }"
+    >
+      <IconChat class="w-6 h-6" />
+    </RouterLink>
     <div class="indicator">
       <RouterLink
         v-tooltip.left="{
@@ -97,6 +110,7 @@ import { storeToRefs } from "pinia";
 import IconHome from "~icons/ion/home";
 import IconGlobeOutline from "~icons/ion/globe-outline";
 import IconSearch from "~icons/ion/search-outline";
+import IconChat from "~icons/ion/chatbubbles-outline";
 import IconNotificationsOutline from "~icons/ion/notifications-outline";
 
 const client = (inject("client") as ComputedRef<AppClient>).value;

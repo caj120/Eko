@@ -223,6 +223,90 @@ Two rules are also declared but **not enforced by peers**:
 Both are marked in the source. Do not ship a state whose safety depends on
 either until they are real.
 
+## Messaging and calls
+
+Eko can carry private conversations and live calls between its members. The
+`messages` zome does the work, and it is built differently from the feed on
+purpose.
+
+### What it does
+
+- **Direct messages** between two people, and **small groups** of 3 to 12.
+- **Calls** over WebRTC: video, audio only, or a broadcast where one person
+  sends and the rest watch. A group can call as a mesh (everyone to everyone),
+  which is comfortable for about four to six people.
+- Messages from someone you have not accepted arrive as a request.
+
+### How it is built
+
+Messages never touch the shared DHT. The sender writes the message to their own
+chain, then hands it straight to each member with a direct call. Each member
+keeps their own copy as a private entry on their own chain. So there is no
+public record of who talked to whom, and no server in the middle.
+
+If a member is offline, the message stays marked pending on the sender's side
+and is retried when the app starts and every 30 seconds after. A delivery
+receipt is written for each member who confirms, so a retry never duplicates.
+
+A call is a WebRTC connection between phones. Holochain only carries the
+handshake (offer, answer, network candidates) as ephemeral remote signals.
+Nothing about a call is written to any chain.
+
+### Zome API (`messages`)
+
+| Function | Purpose |
+| --- | --- |
+| `get_my_conversations` | Every conversation I hold, newest first |
+| `open_direct(agent)` | Open or create the conversation with one person |
+| `create_group({title, members, first_message})` | Start a group; members are fixed |
+| `accept_conversation(key)` | Accept a request |
+| `get_messages(key)` | A thread, oldest first, with who each message is still waiting on |
+| `send_message({conversation_key, body, reply_to})` | Write and deliver |
+| `retry_pending()` | Retry everything undelivered |
+| `receive_message(wire)` | Called by other agents to hand me a message |
+| `send_call_signal(...)` / `recv_remote_signal` | Call handshake |
+
+### Honest limits
+
+- **Delivery needs both sides to be online at some point.** An offline member
+  gets the message only after the sender comes back online and retries. There
+  is no relay holding messages in between. A relay or backup peer would fix
+  this and is the natural next step.
+- **No history on a new device.** Messages live on the devices that received
+  them. A new device starts empty.
+- **Anyone can send you a message request.** There is no blocking yet. A
+  stranger can add entries to your private chain until blocking and a
+  per-sender limit exist.
+- **Group membership is set when the group is created.** Add or remove people
+  by starting a new group. Each member trusts the list they were sent.
+- **Calls need NAT help.** The default is a public STUN server, which tells its
+  operator your IP address. Some networks block direct connections and need a
+  TURN relay. Set `VITE_ICE_SERVERS` to a JSON list of your own servers.
+- **Mesh calls do not scale.** Past about six people the video load on each
+  phone becomes too much. A broadcast helps because only the host uploads, but
+  a host with many viewers still needs the bandwidth.
+- **Messages are not end-to-end encrypted by Eko itself.** They travel over
+  Holochain's encrypted connections between peers and rest unencrypted on each
+  person's own chain. That is private from the network, not from someone who
+  has your device.
+- **Not yet verified end to end.** The tests cover delivery, requests, groups,
+  offline pending and signal arrival. A real two-device video call has not
+  been tried.
+
+### Where it came from
+
+The shape borrows from two Holochain apps. Presence (darksoil studio) uses
+WebRTC with signaling carried over Holochain. Volla Messages keeps each
+conversation in its own small network. Eko keeps messages inside one network
+but stores them privately and peer to peer. Moving each conversation to its own
+cloned network, as Volla does, would also hide the fact that a conversation
+exists and is the stronger design. It was left out of this first version
+because it changes the app's structure.
+
+Loop (loopis.live) is a live-events platform: hosting, registration, replays.
+Eko's broadcast mode covers the "host speaks, others watch" part. Scheduling,
+registration and replays are not built.
+
 ## Validation rules in `credits`
 
 1. `recipient != author`. No self-crediting.
@@ -279,11 +363,9 @@ inserted above it. Current order: `profiles_integrity`, `echoes_integrity`,
 
 ## Not done yet
 
-- No UI for credits. The Vue app has no credits view, no credit button on an
-  echo, no credits tab on a profile.
-- No tryorama tests for the `credits` zome.
 - No UI for GENESIS States. No charter form, roster, or commitment list.
-- No tryorama tests for the `genesis` zome.
+- Messaging and calls are new and unverified between real devices. See the
+  honest limits in "Messaging and calls".
 - GENESIS States are declared, not sovereign. See the cloned-cell note above.
 - Nothing wired to `humancredit.co`. Reaching browser visitors means Holo
   hosting, which the `holo-dev-server` and joining-service plumbing supports.

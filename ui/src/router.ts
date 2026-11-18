@@ -10,6 +10,7 @@ import EchoesListMention from "./pages/EchoesListMention.vue";
 import EchoesListAuthor from "./pages/EchoesListAuthor.vue";
 import NotFound from "./pages/NotFound.vue";
 import MyNotifications from "./pages/MyNotifications.vue";
+import Messages from "./pages/Messages.vue";
 import { getHomeRedirect } from "./utils/homeRedirect";
 
 export const ROUTES = {
@@ -20,6 +21,7 @@ export const ROUTES = {
   creators: "creators",
   followers: "followers",
   notifications: "notifications",
+  messages: "messages",
   feed: "feed",
   yarn: "yarn",
   hashtag: "hashtag",
@@ -57,6 +59,11 @@ export const routes: RouteRecordRaw[] = [
     path: "/notifications",
     name: ROUTES.notifications,
     component: MyNotifications,
+  },
+  {
+    path: "/messages/:key?",
+    name: ROUTES.messages,
+    component: Messages,
   },
   {
     path: "/discover",

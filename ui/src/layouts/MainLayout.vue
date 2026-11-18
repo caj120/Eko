@@ -73,6 +73,8 @@
 
   <ToastNotices class="z-30" />
 
+  <CallOverlay />
+
   <SearchEverythingDialog v-model="showSearchDialog" />
 
   <CreateEchoDialog
@@ -124,10 +126,12 @@ import { useCellsReady } from "@/composables/useCellsReady";
 import { useRouter, useRoute } from "vue-router";
 import { makeUseNotificationsReadStore } from "@/stores/notificationsRead";
 import { setHomeRedirect } from "@/utils/homeRedirect";
-import { useInfiniteQuery, useQuery } from "@tanstack/vue-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { wrapInput } from "@/utils/zomeCall";
 import IconAdd from "~icons/ion/add";
 import ToastNotices from "@/components/ToastNotices.vue";
+import CallOverlay from "@/components/CallOverlay.vue";
+import { useMessagingStore } from "@/stores/messaging";
 import { useCreateEchoDialogStore } from "@/stores/createEchoDialog";
 import CreateEchoDialog from "@/components/CreateEchoDialog.vue";
 import CreateProfileIfNotFoundDialog from "@/components/CreateProfileIfNotFoundDialog.vue";
@@ -163,6 +167,16 @@ const {
 
 const { lightboxImgSrc, showLightbox } = storeToRefs(useLightboxStore());
 const { closeLightbox } = useLightboxStore();
+
+const queryClientForMessages = useQueryClient();
+const messagingStore = useMessagingStore();
+watch(
+  cellsReady,
+  (ready) => {
+    if (ready) messagingStore.start(client, queryClientForMessages);
+  },
+  { immediate: true }
+);
 
 const showSearchDialog = ref(false);
 const forceReloadRouterViewKey = ref(0);

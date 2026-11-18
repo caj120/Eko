@@ -29,6 +29,10 @@ integrity:
       hash: ~
       path: "../../../target/wasm32-unknown-unknown/release/genesis_integrity.wasm"
       dependencies: ~
+    - name: messages_integrity
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/messages_integrity.wasm"
+      dependencies: ~
 coordinator:
   zomes:
     - name: profiles
@@ -52,3 +56,8 @@ coordinator:
       path: "../../../target/wasm32-unknown-unknown/release/genesis.wasm"
       dependencies:
         - name: genesis_integrity
+    - name: messages
+      hash: ~
+      path: "../../../target/wasm32-unknown-unknown/release/messages.wasm"
+      dependencies:
+        - name: messages_integrity

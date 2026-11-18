@@ -54,3 +54,12 @@ path = "crates/hc_link_pagination"
 
 [workspace.dependencies.hc_zome_input]
 path = "crates/hc_zome_input"
+
+[workspace.dependencies.messages]
+path = "dnas/eko/zomes/coordinator/messages"
+
+[workspace.dependencies.messages_integrity]
+path = "dnas/eko/zomes/integrity/messages"
+
+[workspace.dependencies.message_types]
+path = "crates/message_types"

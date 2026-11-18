@@ -290,8 +290,8 @@ Nothing about a call is written to any chain.
   person's own chain. That is private from the network, not from someone who
   has your device.
 - **Not yet verified end to end.** The tests cover delivery, requests, groups,
-  offline pending and signal arrival. A real two-device video call has not
-  been tried.
+  and signal arrival. Retrying delivery to an offline member is not covered
+  by a test yet. A real two-device video call has not been tried.
 
 ### Where it came from
 

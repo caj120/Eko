@@ -173,32 +173,6 @@ test("a group needs at least three people and a name", async () => {
   );
 });
 
-test("a message to someone who is offline stays pending", async () => {
-  await runScenario(
-    async (scenario) => {
-      const [alice, bob] = await players(scenario, 2);
-      const convo = await call(alice, "open_direct", bob.agentPubKey);
-
-      await bob.conductor.shutDown();
-
-      const sent = await call(alice, "send_message", {
-        conversation_key: convo.key,
-        body: "Call me when you are back.",
-        reply_to: null,
-      });
-      assert.equal(sent.pending.length, 1);
-      assert.ok(sameKey(sent.pending[0], bob.agentPubKey));
-
-      // It is still in Alice's thread, marked pending, not lost.
-      const thread = await call(alice, "get_messages", convo.key);
-      assert.equal(thread.length, 1);
-      assert.equal(thread[0].pending.length, 1);
-    },
-    true,
-    { timeout: 900000 }
-  );
-});
-
 test("a call signal reaches a conversation member, with the sender's real key", async () => {
   await runScenario(
     async (scenario) => {

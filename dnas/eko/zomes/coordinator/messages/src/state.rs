@@ -18,9 +18,10 @@ impl State {
 }
 
 fn records_of(unit: UnitEntryTypes) -> ExternResult<Vec<Record>> {
+    let entry_type: EntryType = unit.try_into()?;
     query(
         ChainQueryFilter::new()
-            .entry_type(EntryType::App(unit.into()))
+            .entry_type(entry_type)
             .include_entries(true),
     )
 }
